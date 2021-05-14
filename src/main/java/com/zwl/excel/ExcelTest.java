@@ -5,6 +5,8 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.enums.CellExtraTypeEnum;
 import com.alibaba.excel.read.metadata.ReadSheet;
+import com.alibaba.excel.write.metadata.WriteSheet;
+import com.google.common.collect.Lists;
 import com.zwl.excel.listener.ConvertListener;
 import com.zwl.excel.listener.DemoExtraListener;
 import com.zwl.excel.listener.DemoListener;
@@ -14,7 +16,11 @@ import com.zwl.excel.model.ConvertData;
 import com.zwl.excel.model.DemoData;
 import com.zwl.excel.model.DemoExtraData;
 import com.zwl.excel.model.Do;
+import com.zwl.excel.model.FillData;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -94,6 +100,9 @@ public class ExcelTest {
   }
 
 
+  /**
+   * 同步读取
+   */
   @Test
   public void synchronousRead() {
     String inputStream = Objects.requireNonNull(classLoader.getResource("excel/demo.xlsx"))
@@ -105,19 +114,37 @@ public class ExcelTest {
       log.info("读取到数据：{}", map);
     }
 
-    EasyExcel.read(inputStream,new NoModelListener()).sheet().doRead();
+    EasyExcel.read(inputStream, new NoModelListener()).sheet().doRead();
   }
 
 
   @Test
-  public void convertExcel() {
+  public void excelWrite() throws FileNotFoundException {
+    //write test
 
+    LinkedList<Do> list = Lists.newLinkedList();
+    for (int i = 0; i < 10; i++) {
+      list.add(new Do("张三" + i, 20 + i, "男", "开发"));
+    }
+    String filePath = new ClassPathResource("excel").getAbsolutePath() + "/write.xlsx";
+    FileOutputStream outputStream = new FileOutputStream(filePath);
+
+    EasyExcel.write(outputStream, Do.class).build().write(list, new WriteSheet()).finish();
   }
 
 
+  /**
+   * excel填充
+   */
   @Test
-  public void excelWrite() {
+  public void excelFill() {
+    String fileName = this.getClass().getResource("/").getPath() + "/simpleFill.xlsx";
+    String tmpPath = classLoader.getResource("excel/simple.xlsx").getPath();
 
+    FillData fillData = new FillData();
+    fillData.setName("张三");
+    fillData.setNumber(29);
+
+    EasyExcel.write(fileName).withTemplate(tmpPath).sheet().doFill(fillData);
   }
-
 }
