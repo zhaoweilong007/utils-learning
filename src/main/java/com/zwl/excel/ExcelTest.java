@@ -3,8 +3,11 @@ package com.zwl.excel;
 import cn.hutool.core.io.resource.ClassPathResource;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
+import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.enums.CellExtraTypeEnum;
 import com.alibaba.excel.read.metadata.ReadSheet;
+import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.google.common.collect.Lists;
 import com.zwl.excel.listener.ConvertListener;
@@ -20,6 +23,8 @@ import com.zwl.excel.model.FillData;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -146,5 +151,37 @@ public class ExcelTest {
     fillData.setNumber(29);
 
     EasyExcel.write(fileName).withTemplate(tmpPath).sheet().doFill(fillData);
+  }
+
+
+  @Test
+  public void excelWriteHead() {
+
+    String filePath = new ClassPathResource("excel").getAbsolutePath() + "/test.xlsx";
+
+    ExcelWriterBuilder writerBuilder = EasyExcel.write();
+// 输出的文件对象，可以是File、路径（字符串）或者OutputStream实例
+    writerBuilder.file(filePath);
+// 指定sheet，可以是数字序号sheetNo或者字符串sheetName，可以不设置，由下面提到的WriteSheet覆盖
+    writerBuilder.sheet("demo");
+// 文件的密码
+// Excel文件格式，包括ExcelTypeEnum.XLSX和ExcelTypeEnum.XLS
+    writerBuilder.excelType(ExcelTypeEnum.XLSX);
+// 是否自动关闭输出流
+    writerBuilder.autoCloseStream(true);
+// 指定文件的标题行，可以是Class对象（结合@ExcelProperty注解使用），或者List<List<String>>实例
+    writerBuilder.head(Collections.singletonList(Collections.singletonList("head")));
+// 构建ExcelWriter实例
+    ExcelWriter excelWriter = writerBuilder.build();
+    List<List<String>> data = new ArrayList<>();
+    ArrayList<String> objectArrayList = new ArrayList<>();
+    objectArrayList.add("sadadada");
+    data.add(objectArrayList);
+// 构建输出的sheet
+    WriteSheet writeSheet = new WriteSheet();
+    writeSheet.setSheetName("target");
+    excelWriter.write(data, writeSheet);
+// 这一步一定要调用，否则输出的文件有可能不完整
+    excelWriter.finish();
   }
 }
