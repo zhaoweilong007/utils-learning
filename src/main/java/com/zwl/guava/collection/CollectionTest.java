@@ -2,7 +2,9 @@ package com.zwl.guava.collection;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ArrayTable;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ConcurrentHashMultiset;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.HashMultimap;
@@ -15,14 +17,20 @@ import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.MapDifference;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.google.common.collect.TreeBasedTable;
 import com.google.common.collect.TreeMultimap;
 import com.google.common.collect.TreeMultiset;
 import com.google.common.collect.TreeRangeMap;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableSet;
+import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.multiset.HashMultiSet;
 import org.junit.Test;
@@ -52,10 +60,7 @@ public class CollectionTest {
     log.info("immutableSet:{}", immutableSet);
 
     ImmutableList<String> immutableList = ImmutableList.copyOf(immutableSet);
-
     log.info("immutableList:{}", immutableList);
-
-
   }
 
 
@@ -200,6 +205,74 @@ public class CollectionTest {
     System.out.println(rangeMap.get(10));
     System.out.println(rangeMap.get(11));
     System.out.println(rangeMap.get(20));
+
+  }
+
+
+  /**
+   * 对集合的函数式处理和迭代处理
+   */
+  @Test
+  public void functionAndIterable() {
+
+    HashMap<Integer, String> map = Maps.<Integer, String>newHashMap();
+    Random random = new Random();
+
+    for (int i = 0; i < 100; i++) {
+      map.put(random.nextInt(200), String.valueOf(random.nextInt(200)));
+    }
+
+    Map<Integer, String> filterKeys = Maps.filterKeys(map, key -> key > 100 && key < 300);
+    log.info("===============过滤大于100并且小于300的key=========");
+    filterKeys.entrySet().forEach(System.out::println);
+
+    log.info("===============过滤小于50或者大于150的value=========");
+    Map<Integer, String> filterValues = Maps
+        .filterValues(map, val -> Integer.parseInt(val) < 50 || Integer.parseInt(val) > 150);
+    filterValues.entrySet().forEach(System.out::println);
+
+    log.info("===================转换为新的value=====================");
+    Map<Integer, String> values = Maps.transformValues(filterValues, s -> "new-" + s);
+    System.out.println(values);
+
+    log.info("=========比较两个不同的Map==========");
+
+    Map<String, String> left = Maps.newHashMap();
+    left.put("a", "a1");
+    left.put("b", "b1");
+    left.put("c", "c1");
+    left.put("d", "d1");
+    left.put("e", "e");
+
+    Map<String, String> right = Maps.newHashMap();
+    right.put("a", "a2");
+    right.put("b", "b2");
+    right.put("c", "c2");
+    right.put("d", "d2");
+    right.put("e", "e");
+
+    MapDifference<String, String> difference = Maps.difference(left, right);
+
+    difference.entriesDiffering().forEach((Key, diff) -> {
+      log.info("key:{},left value:{},right value:{}", Key, diff.leftValue(), diff.rightValue());
+    });
+
+    LinkedList<Integer> list = Lists.<Integer>newLinkedList();
+    for (int i = 0; i < 20; i++) {
+      list.add(random.nextInt(100));
+    }
+    log.info("=========================过滤大于50的list==================");
+    LinkedList<Integer> linkedList = Lists.newLinkedList(Collections2.filter(list, i -> i > 50));
+    linkedList.forEach(System.out::println);
+
+
+    //迭代 链式调用
+    ImmutableMap<Integer, String> integerStringImmutableMap = FluentIterable.<Integer>from(list)
+        .filter(i -> i < 50).transform(v -> v + 100).limit(10)
+        .toMap(q -> "val:" + q);
+
+
+
 
   }
 

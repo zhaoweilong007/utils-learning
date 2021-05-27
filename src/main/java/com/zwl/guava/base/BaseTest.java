@@ -116,7 +116,7 @@ public class BaseTest {
 
 
   @Data
-  static class Person implements Comparable<Person> {
+  class Person implements Comparable<Person> {
 
     private String fistName;
     private String lastName;
