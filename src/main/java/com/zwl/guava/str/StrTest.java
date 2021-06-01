@@ -18,6 +18,7 @@ public class StrTest {
 
   @Test
   public void joiner() {
+    //连接器
     Joiner joiner = Joiner.on(",").skipNulls();
     String join = joiner.join("a", "v", "q", "s");
     log.info("join:{}", join);
@@ -26,7 +27,7 @@ public class StrTest {
 
   @Test
   public void split() {
-
+    //拆分器
     CharMatcher charMatcher = CharMatcher.breakingWhitespace();
 
     //单个字符
