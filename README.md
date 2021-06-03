@@ -6,13 +6,14 @@
 
 > excel读取和写入
 
-[ExcelTest](src/main/java/com/zwl/excel/ExcelTest.java)
+[excel测试](src/main/java/com/zwl/excel/ExcelTest.java)
 
 ## http
 
 > apache http和okhttp
 
-[OkHttpTest](src/main/java/com/zwl/http/okhttp/OkHttpTest.java)
+[okhttp测试](src/main/java/com/zwl/http/okhttp/OkHttpTest.java)
+[httpclient测试](src/main/java/com/zwl/http/httpclient/HttpClientTest.java)
 
 ## json
 
