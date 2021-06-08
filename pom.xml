@@ -81,6 +81,12 @@
       <version>1.2.3</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-all</artifactId>
+      <version>4.1.65.Final</version>
+    </dependency>
 
   </dependencies>
   <description>utils各种工具类学习demo</description>
