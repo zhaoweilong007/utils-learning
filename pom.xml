@@ -4,6 +4,16 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <artifactId>utils-learning</artifactId>
 
+  <description>utils各种工具类学习demo</description>
+  <groupId>com.zwl</groupId>
+  <modelVersion>4.0.0</modelVersion>
+  <version>1.0</version>
+
+  <properties>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
+  </properties>
+
   <dependencies>
     <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
     <dependency>
@@ -17,7 +27,6 @@
       <artifactId>fluent-hc</artifactId>
       <version>4.5.13</version>
     </dependency>
-
     <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
     <dependency>
       <artifactId>okhttp</artifactId>
@@ -66,7 +75,6 @@
       <groupId>junit</groupId>
       <version>4.13.2</version>
     </dependency>
-
     <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
     <dependency>
       <artifactId>lombok</artifactId>
@@ -80,7 +88,6 @@
       <groupId>ch.qos.logback</groupId>
       <version>1.2.3</version>
     </dependency>
-
     <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
     <dependency>
       <groupId>io.netty</groupId>
@@ -88,16 +95,52 @@
       <version>4.1.65.Final</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.13.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.redisson</groupId>
+      <artifactId>redisson</artifactId>
+      <version>3.11.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct</artifactId>
+      <version>1.4.2.Final</version>
+    </dependency>
+
   </dependencies>
-  <description>utils各种工具类学习demo</description>
-  <groupId>com.zwl</groupId>
-  <modelVersion>4.0.0</modelVersion>
 
-  <properties>
-    <maven.compiler.source>8</maven.compiler.source>
-    <maven.compiler.target>8</maven.compiler.target>
-  </properties>
 
-  <version>1.0</version>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.mapstruct</groupId>
+              <artifactId>mapstruct-processor</artifactId>
+              <version>1.4.2.Final</version>
+            </path>
+            <path>
+              <artifactId>lombok</artifactId>
+              <groupId>org.projectlombok</groupId>
+              <version>1.18.20</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
