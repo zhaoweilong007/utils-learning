@@ -20,7 +20,7 @@
 
 > 序列化和反序列化
 
-- [gson](src/main/java/com/zwl/json/gson)
+- [gson](src/main/java/com/zwl/json/gson/GsonTest.java)
 
 - [fastjson](src/main/java/com/zwl/json/fastjson)
 

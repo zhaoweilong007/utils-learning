@@ -1,4 +1,4 @@
-package com.zwl.json.json;
+package com.zwl.json.gson;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.google.common.collect.Maps;
