@@ -9,9 +9,9 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.annotations.Since;
+import com.zwl.json.Demo;
+import com.zwl.json.Person;
+import com.zwl.json.User;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,8 +20,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import lombok.Data;
-import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
@@ -33,17 +31,6 @@ import org.junit.Test;
 public class GsonTest {
 
 
-  @Data
-  @Accessors(chain = true)
-  private class Person {
-
-    String name;
-    String phone;
-    Integer age;
-    Float aFloat;
-    Double aDouble;
-
-  }
 
 
   @Test
@@ -85,19 +72,7 @@ public class GsonTest {
     maps.forEach(System.out::println);
   }
 
-  @Data
-  @Accessors(chain = true)
-  private class User {
 
-    String account;
-    @SerializedName(value = "userName")
-    String nickName;
-    @SerializedName(value = "age", alternate = {"test", "test2"})
-    Integer age;
-
-    @Expose
-    String img;
-  }
 
   @Test
   public void toCustomType() {
@@ -127,33 +102,13 @@ public class GsonTest {
   }
 
 
-  @Data
-  class Demo {
 
-    @Since(2)
-    LocalDateTime newDate;
-
-    @Since(1)
-    Date oldDate;
-
-
-    @Since(1)
-    String name;
-
-    @Since(2)
-    String userName;
-
-
-    String test_str;
-
-
-    Integer qwe;
-
-  }
 
 
   @Test
   public void gsonBuild() {
+
+    Gson gsonBasic = new Gson();
 
     Gson gson = new GsonBuilder()
         //格式化
@@ -163,18 +118,19 @@ public class GsonTest {
         .setExclusionStrategies(new ExclusionStrategy() {
           @Override
           public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+            log.info("字段:{}",fieldAttributes.getName());
             return "test_str".equals(fieldAttributes.getName());
           }
 
           @Override
           public boolean shouldSkipClass(Class<?> aClass) {
-
+            log.info("class type name:{}",aClass.getName());
             return aClass.isAssignableFrom(Integer.class);
           }
         })
         .setLenient()
         //指定版本
-        .setVersion(2)
+        .setVersion(2.0)
         //字段命名策略
         .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
         //字段命名策略
@@ -188,6 +144,8 @@ public class GsonTest {
     demo.setUserName("张三");
     demo.setTest_str("test");
     demo.setQwe(123);
+
+    log.info("to json use gsonBasic:{}",gsonBasic.toJson(demo));
 
     String json = gson.toJson(demo);
     log.info("tojson :{}", json);
