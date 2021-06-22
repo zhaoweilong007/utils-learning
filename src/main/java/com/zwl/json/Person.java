@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class Person {
+
   String name;
   String phone;
   Integer age;

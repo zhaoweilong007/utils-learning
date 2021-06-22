@@ -113,7 +113,10 @@ public class GsonTest {
     Gson gson = new GsonBuilder()
         //格式化
         .setPrettyPrinting()
+        //日期格式
         .setDateFormat("yyyy-MM-dd HH:mm:ss")
+        //自定义序列化
+//        .registerTypeAdapter(String.class,GsonSerializer.class)
         //排除策略
         .setExclusionStrategies(new ExclusionStrategy() {
           @Override
