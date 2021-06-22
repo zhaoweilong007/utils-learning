@@ -22,7 +22,7 @@
 
 - [gson](src/main/java/com/zwl/json/gson/GsonTest.java)
 
-- [fastjson](src/main/java/com/zwl/json/fastjson)
+- [fastjson](src/main/java/com/zwl/json/fastjson/JSONTest.java)
 
 ## guava
 
@@ -56,6 +56,10 @@
 ## hutool
 
 > java工具类库
+> 
+[hutool测试](src/main/java/com/zwl/hutool/HutoolTest.java)
+
+
 
 ## redission
 
