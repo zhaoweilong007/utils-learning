@@ -21,8 +21,8 @@ import org.jsoup.nodes.Document;
 @Slf4j
 public class DownloadDocumentThread implements Callable<Document> {
 
-  private OkHttpClient okHttpClient;
-  private String url;
+  private final OkHttpClient okHttpClient;
+  private final String url;
 
   @Override
   public Document call() throws IOException {

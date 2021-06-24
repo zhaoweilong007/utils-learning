@@ -1,8 +1,11 @@
 package com.zwl.jsoup;
 
+import com.google.common.collect.Maps;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 /**
  * @author zhao_wei_long
@@ -10,25 +13,28 @@ import org.jsoup.nodes.Document;
  **/
 public class DocumentParseThread implements Callable<Map<String, Object>> {
 
-  private Document document;
+  private final Document document;
+  private final HashMap<String, Object> map;
 
   public DocumentParseThread(Document document) {
     this.document = document;
+    map = Maps.<String, Object>newHashMap();
   }
 
   @Override
-  public Map<String, Object> call() throws Exception {
-
+  public Map<String, Object> call() {
     try {
       parse();
     } catch (Exception e) {
       e.printStackTrace();
     }
-
-    return null;
+    return map;
   }
 
   private void parse() {
+    //解析doc
+    Elements elements = document.select("");
+
 
   }
 }
