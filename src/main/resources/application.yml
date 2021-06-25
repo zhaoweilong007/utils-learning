@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: utils-learning
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    hikari:
+      #最大线程数
+      maximum-pool-size: 10
+      #最小空闲
+      minimum-idle: 5
+      #空闲线程时间
+      idle-timeout: 180000
+      #开启自动提交
+      auto-commit: true
+      #线程名称
+      pool-name: HiKariCP
+      #最大存活时间
+      max-lifetime: 1800000
+      #连接超时时间
+      connection-timeout: 30000
+      #测试查询
+      connection-test-query: SELECT 1
+
+
+logging:
+  level:
+    root: info
+    com.zwl: debug

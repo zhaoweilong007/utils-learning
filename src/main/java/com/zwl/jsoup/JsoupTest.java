@@ -1,27 +1,29 @@
 package com.zwl.jsoup;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
+import okhttp3.ResponseBody;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
@@ -69,85 +71,98 @@ public class JsoupTest {
 
 
   @Test
-  public void webCrawling() throws IOException {
-    WebCrawling webCrawling = new WebCrawling(new LinkedBlockingQueue<>(100));
+  public void webCrawling() throws Exception {
+    WebCrawler webCrawling = new WebCrawler();
     webCrawling.start("");
   }
 
   private static final String topicUrl = "https://www.zhihu.com/topics";
   public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36";
-
   private static final String topicList = "https://www.zhihu.com/node/TopicsPlazzaListV2";
 
   @Test
-  public void parseTopic() throws IOException {
+  public void parseTopic() throws IOException, InterruptedException {
     //解析话题
     Document document = Jsoup.connect(topicUrl)
         .userAgent(USER_AGENT)
 //          .cookie("cookie", cookie)
         .get();
-
     Elements elements = document.select(".zm-topic-cat-item");
-    List<Topic> topics = elements.stream()
-        .map(element -> new Topic(element.attr("data-id"), element.child(0).text()))
-        .collect(Collectors.toList());
-    iterTopic(topics);
-
+    ConcurrentLinkedQueue<Topic> topics = elements.stream()
+        .map(element -> {
+          Topic topic = new Topic();
+          topic.setTopicId(Integer.parseInt(element.attr("data-id")));
+          topic.setTopicName(element.child(0).text());
+          return topic;
+        })
+        .collect(Collectors.toCollection(ConcurrentLinkedQueue::new));
+    ConcurrentLinkedQueue<Topic> concurrentLinkedQueue = new ConcurrentLinkedQueue<>(topics);
+    parseTopic(topics, concurrentLinkedQueue);
+    executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.MINUTES);
+    concurrentLinkedQueue.forEach(System.out::println);
   }
 
-
-  @AllArgsConstructor
-  @NoArgsConstructor
-  static class Topic {
-
-    String id;
-    String desc;
-  }
-
-
-  private void iterTopic(List<Topic> list) throws IOException {
-    CopyOnWriteArrayList<Topic> arrayList = Lists.<Topic>newCopyOnWriteArrayList(list);
-
-    parseTopic(list, arrayList);
-
-    arrayList.forEach(System.out::println);
-  }
-
-  public List<Topic> parse(String id) throws IOException {
-    List<Topic> topics = new ArrayList<>();
+  /*递归查询所有子话题*/
+  public void queryTopicChildren(Integer prentId, Integer offset,
+      ConcurrentLinkedQueue<Topic> topics) {
+    log.info("查询父话题：【{}】下，offset=【{}】的子话题", prentId, offset);
     FormBody body = new FormBody.Builder()
         .add("method", "next")
         .add("params",
-            "{\"topic_id\":" + id + ",\"offset\":100,\"hash_id\":\"\"}")
+            "{\"topic_id\":" + prentId + ",\"offset\":" + offset + ",\"hash_id\":\"\"}")
         .build();
     Request request = new Builder().url(topicList).post(body).build();
-    String json = new OkHttpClient().newCall(request).execute().body().string();
+    String json;
+    try {
+      ResponseBody responseBody = new OkHttpClient().newCall(request).execute().body();
+      if (responseBody == null) {
+        return;
+      }
+      json = responseBody.string();
+    } catch (IOException e) {
+      return;
+    }
     JSONObject jsonObject = JSON.parseObject(json);
     JSONArray msg = jsonObject.getJSONArray("msg");
-
-    return msg.stream().map(o -> {
+    if (msg == null || msg.isEmpty()) {
+      return;
+    }
+    ConcurrentLinkedQueue<Topic> collect = msg.parallelStream().map(o -> {
       String obj = (String) o;
+      Document document = Jsoup.parse(obj);
+      Element element = document.select("a[target=_blank]").first();
+      String href = element.attr("href");
+      String tid = StrUtil.subAfter(href, "/topic/", true);
+      String desc = element.select("strong").text();
       Topic topic = new Topic();
-      int index = obj.indexOf("href=\"/topic/");
-      int start = obj.indexOf("<strong>");
-      int end = obj.indexOf("</strong>");
-      topic.id = obj.substring(index,index+8);
-      topic.desc = obj.substring(start,end);
+      topic.setTopicId(Integer.parseInt(tid));
+      ;
+      topic.setTopicName(desc);
+      topic.setParentId(Convert.toLong(prentId));
       return topic;
-    }).collect(Collectors.toList());
+    }).collect(Collectors.toCollection(ConcurrentLinkedQueue::new));
+
+    topics.addAll(collect);
+
+    queryTopicChildren(prentId, offset + 20, topics);
+
   }
 
+  ExecutorService executorService = Executors.newFixedThreadPool(30);
 
-  public void parseTopic(List<Topic> topics, List<Topic> result) throws IOException {
+  /*递归解析所有话筒*/
+  public void parseTopic(ConcurrentLinkedQueue<Topic> topics, ConcurrentLinkedQueue<Topic> result) {
     for (Topic topic : topics) {
-      List<Topic> list = parse(topic.id);
-      if (!list.isEmpty()) {
-        parseTopic(list, result);
-      } else {
+      executorService.execute(() -> {
         result.add(topic);
-      }
+        ConcurrentLinkedQueue<Topic> linkedQueue = new ConcurrentLinkedQueue<>();
+        log.info("查询话题：{}", topic.getTopicName());
+        queryTopicChildren(topic.getTopicId(), 0, linkedQueue);
+        if (!linkedQueue.isEmpty()) {
+          parseTopic(linkedQueue, result);
+        }
+      });
     }
-
   }
 
   @Test
@@ -155,10 +170,32 @@ public class JsoupTest {
     String json = "{\"r\":0,\n"
         + " \"msg\": [\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19618685\\\">\\n<img src=\\\"https:\\/\\/pic1.zhimg.com\\/0f4a70d981395f5cb69a56eac8059df7_l.png\\\" alt=\\\"\\u5ba4\\u5185\\u88c5\\u4fee\\\">\\n<strong>\\u5ba4\\u5185\\u88c5\\u4fee<\\/strong>\\n<\\/a>\\n<p>\\u5ba4\\u5185\\u88c5\\u4fee\\u5305\\u62ec\\u623f\\u95f4\\u8bbe\\u8ba1\\u3001\\u88c5\\u4fee\\u3001\\u5bb6\\u5177\\u5e03\\u7f6e\\u53ca\\u5404\\u79cd\\u5c0f\\u88c5\\u70b9\\u3002\\u504f\\u91cd\\u4e8e\\u5efa\\u7b51\\u7269\\u2026<\\/p>\\n\\n<a id=\\\"t::-22882\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19769983\\\">\\n<img src=\\\"https:\\/\\/pic3.zhimg.com\\/6db301332_l.jpg\\\" alt=\\\"\\u8c22\\u718a\\u732b\\u541b\\u98df\\u8c31\\\">\\n<strong>\\u8c22\\u718a\\u732b\\u541b\\u98df\\u8c31<\\/strong>\\n<\\/a>\\n<p><\\/p>\\n\\n<a id=\\\"t::-73446\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19557644\\\">\\n<img src=\\\"https:\\/\\/pic1.zhimg.com\\/v2-778a406ffe285f5922d48bc74e8ac003_l.jpg\\\" alt=\\\"\\u95f4\\u9694\\u5e74\\uff08Gap Year\\uff09\\\">\\n<strong>\\u95f4\\u9694\\u5e74\\uff08Gap Year\\uff09<\\/strong>\\n<\\/a>\\n<p>Gap Year\\u610f\\u4e3a\\u95f4\\u9694\\u5e74\\u3001\\u7a7a\\u6863\\u5e74\\uff0c\\u662f\\u897f\\u65b9\\u793e\\u4f1a\\u901a\\u8fc7\\u8fd1\\u4ee3\\u4e16\\u754c\\u9752\\u5e74\\u2026<\\/p>\\n\\n<a id=\\\"t::-2496\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19585358\\\">\\n<img src=\\\"https:\\/\\/pic2.zhimg.com\\/v2-77bebabb7d2330b6797bf56f21cdfd8f_l.jpg\\\" alt=\\\"\\u6781\\u7b80\\u4e3b\\u4e49\\uff08Minimalism\\uff09\\\">\\n<strong>\\u6781\\u7b80\\u4e3b\\u4e49\\uff08Minimalism\\uff09<\\/strong>\\n<\\/a>\\n<p>\\u6781\\u7b80\\u4e3b\\u4e49\\u662f\\u4e00\\u79cd\\u751f\\u6d3b\\u4ee5\\u53ca\\u827a\\u672f\\u4e0a\\u7684\\u98ce\\u683c\\uff0c\\u672c\\u4e49\\u4e3a\\u8ffd\\u6c42\\u6781\\u81f4\\u7b80\\u7ea6\\u7684\\u5448\\u73b0\\u6548\\u2026<\\/p>\\n\\n<a id=\\\"t::-11707\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19552189\\\">\\n<img src=\\\"https:\\/\\/pic3.zhimg.com\\/02b2e03bd_l.jpg\\\" alt=\\\"\\u5496\\u5561\\u9986\\\">\\n<strong>\\u5496\\u5561\\u9986<\\/strong>\\n<\\/a>\\n<p>\\u5496\\u5561\\u5e97\\uff08\\u6cd5\\u8bed\\uff1acaf\\u00e9\\uff0c\\u82f1\\u8bed\\uff1acoffee shop \\u6216 co\\u2026<\\/p>\\n\\n<a id=\\\"t::-657\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19610023\\\">\\n<img src=\\\"https:\\/\\/pic2.zhimg.com\\/1bcf2223d_l.jpg\\\" alt=\\\"\\u9910\\u996e\\u4e1a\\\">\\n<strong>\\u9910\\u996e\\u4e1a<\\/strong>\\n<\\/a>\\n<p>\\u9910\\u996e\\u4e1a\\uff08catering\\uff09\\u662f\\u901a\\u8fc7\\u5373\\u65f6\\u52a0\\u5de5\\u5236\\u4f5c\\u3001\\u5546\\u4e1a\\u9500\\u552e\\u548c\\u670d\\u52a1\\u6027\\u2026<\\/p>\\n\\n<a id=\\\"t::-19999\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19573372\\\">\\n<img src=\\\"https:\\/\\/pic4.zhimg.com\\/68752aab8_l.jpg\\\" alt=\\\"\\u83dc\\u8c31\\\">\\n<strong>\\u83dc\\u8c31<\\/strong>\\n<\\/a>\\n<p>\\u83dc\\u8c31\\u662f\\u70f9\\u8c03\\u53a8\\u5e08\\u5229\\u7528\\u5404\\u79cd\\u70f9\\u996a\\u539f\\u6599\\u3001\\u901a\\u8fc7\\u5404\\u79cd\\u70f9\\u8c03\\u6280\\u6cd5\\u521b\\u4f5c\\u51fa\\u7684\\u67d0\\u4e00\\u83dc\\u2026<\\/p>\\n\\n<a id=\\\"t::-7720\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19555489\\\">\\n<img src=\\\"https:\\/\\/pic4.zhimg.com\\/cb9aabba8_l.jpg\\\" alt=\\\"\\u8461\\u8404\\u9152\\\">\\n<strong>\\u8461\\u8404\\u9152<\\/strong>\\n<\\/a>\\n<p>\\u8461\\u8404\\u9152\\u662f\\u4ee5\\u8461\\u8404\\u4e3a\\u539f\\u6599\\u917f\\u9020\\u7684\\u4e00\\u79cd\\u679c\\u9152\\u3002\\u5176\\u9152\\u7cbe\\u5ea6\\u9ad8\\u4e8e\\u5564\\u9152\\u800c\\u4f4e\\u4e8e\\u767d\\u9152\\u2026<\\/p>\\n\\n<a id=\\\"t::-1749\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19650466\\\">\\n<img src=\\\"https:\\/\\/pic3.zhimg.com\\/v2-ab5da638c250186af95ed4258686b041_l.jpg\\\" alt=\\\"\\u70f9\\u996a\\u5e38\\u8bc6\\\">\\n<strong>\\u70f9\\u996a\\u5e38\\u8bc6<\\/strong>\\n<\\/a>\\n<p>\\u90a3\\u4e9b\\u8033\\u719f\\u80fd\\u8be6\\u7684\\u7f8e\\u98df\\u7a8d\\u95e8\\u3002<\\/p>\\n\\n<a id=\\\"t::-33496\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19575374\\\">\\n<img src=\\\"https:\\/\\/pic3.zhimg.com\\/80d4329c6_l.jpg\\\" alt=\\\"\\u53a8\\u623f\\\">\\n<strong>\\u53a8\\u623f<\\/strong>\\n<\\/a>\\n<p>\\u53a8\\u623f\\uff0c\\u662f\\u6307\\u53ef\\u5728\\u5185\\u51c6\\u5907\\u98df\\u7269\\u5e76\\u8fdb\\u884c\\u70f9\\u996a\\u7684\\u623f\\u95f4\\uff0c\\u4e00\\u4e2a\\u73b0\\u4ee3\\u5316\\u7684\\u53a8\\u623f\\u901a\\u5e38\\u2026<\\/p>\\n\\n<a id=\\\"t::-8393\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19666493\\\">\\n<img src=\\\"https:\\/\\/pic2.zhimg.com\\/f15a16b7d_l.jpg\\\" alt=\\\"\\u7537\\u6027\\u7740\\u88c5\\\">\\n<strong>\\u7537\\u6027\\u7740\\u88c5<\\/strong>\\n<\\/a>\\n<p><\\/p>\\n\\n<a id=\\\"t::-38846\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19582090\\\">\\n<img src=\\\"https:\\/\\/pic2.zhimg.com\\/48869342794672518f1c56225641b124_l.jpg\\\" alt=\\\"\\u7537\\u58eb\\\">\\n<strong>\\u7537\\u58eb<\\/strong>\\n<\\/a>\\n<p><\\/p>\\n\\n<a id=\\\"t::-10600\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19766512\\\">\\n<img src=\\\"https:\\/\\/pic4.zhimg.com\\/v2-c862d0fb124f78bbd5224e62a6e64ce8_l.jpg\\\" alt=\\\"\\u5468\\u672b\\u5ea6\\u5047\\\">\\n<strong>\\u5468\\u672b\\u5ea6\\u5047<\\/strong>\\n<\\/a>\\n<p><\\/p>\\n\\n<a id=\\\"t::-72273\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19557333\\\">\\n<img src=\\\"https:\\/\\/pic1.zhimg.com\\/94ddbb433_l.jpg\\\" alt=\\\"\\u5bb6\\u5177\\\">\\n<strong>\\u5bb6\\u5177<\\/strong>\\n<\\/a>\\n<p>\\u5bb6\\u5177\\u662f\\u6307\\u4eba\\u7c7b\\u7ef4\\u6301\\u6b63\\u5e38\\u751f\\u6d3b\\u3001\\u4ece\\u4e8b\\u751f\\u4ea7\\u5b9e\\u8df5\\u548c\\u5f00\\u5c55\\u793e\\u4f1a\\u6d3b\\u52a8\\u5fc5\\u4e0d\\u53ef\\u5c11\\u7684\\u2026<\\/p>\\n\\n<a id=\\\"t::-2382\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19595031\\\">\\n<img src=\\\"https:\\/\\/pic2.zhimg.com\\/4fcb311e0_l.jpg\\\" alt=\\\"\\u751c\\u54c1\\\">\\n<strong>\\u751c\\u54c1<\\/strong>\\n<\\/a>\\n<p>\\u751c\\u54c1\\uff0c\\u4e5f\\u53eb\\u751c\\u70b9\\uff0c\\u662f\\u4e00\\u4e2a\\u5f88\\u5e7f\\u7684\\u6982\\u5ff5\\uff0c\\u5927\\u81f4\\u5206\\u4e3a\\u751c\\u5473\\u70b9\\u5fc3\\u548c\\u5e7f\\u5f0f\\u7684\\u7cd6\\u6c34\\u2026<\\/p>\\n\\n<a id=\\\"t::-14928\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19581985\\\">\\n<img src=\\\"https:\\/\\/pic1.zhimg.com\\/v2-635f0017f024042ac2ecef09056ddecd_l.jpg\\\" alt=\\\"\\u65c5\\u6e38\\u63a8\\u8350\\\">\\n<strong>\\u65c5\\u6e38\\u63a8\\u8350<\\/strong>\\n<\\/a>\\n<p><\\/p>\\n\\n<a id=\\\"t::-10569\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19752767\\\">\\n<img src=\\\"https:\\/\\/pic1.zhimg.com\\/v2-328221e362c00211d1e5db5c62854962_l.jpg\\\" alt=\\\"\\u65c5\\u6e38\\u4e66\\u7c4d\\\">\\n<strong>\\u65c5\\u6e38\\u4e66\\u7c4d<\\/strong>\\n<\\/a>\\n<p><\\/p>\\n\\n<a id=\\\"t::-67661\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19868718\\\">\\n<img src=\\\"https:\\/\\/pic2.zhimg.com\\/v2-3db532ebcbbfbb8784ff1cd17aaf559b_l.jpg\\\" alt=\\\"\\u5973\\u88c5\\u642d\\u914d\\\">\\n<strong>\\u5973\\u88c5\\u642d\\u914d<\\/strong>\\n<\\/a>\\n<p><\\/p>\\n\\n<a id=\\\"t::-108264\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19644670\\\">\\n<img src=\\\"https:\\/\\/pic3.zhimg.com\\/v2-f2dea7d59358ad1970955c40c4c79752_l.jpg\\\" alt=\\\"\\u65f6\\u5c1a\\u7a7f\\u8863\\\">\\n<strong>\\u65f6\\u5c1a\\u7a7f\\u8863<\\/strong>\\n<\\/a>\\n<p><\\/p>\\n\\n<a id=\\\"t::-31552\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\",\"<div class=\\\"item\\\"><div class=\\\"blk\\\">\\n<a target=\\\"_blank\\\" href=\\\"\\/topic\\/19569509\\\">\\n<img src=\\\"https:\\/\\/pic3.zhimg.com\\/v2-c667681e61d123c49477425cdba91787_l.jpg\\\" alt=\\\"\\u8336\\u53f6\\\">\\n<strong>\\u8336\\u53f6<\\/strong>\\n<\\/a>\\n<p>\\u8336\\u53f6\\uff0c\\u6307\\u8336\\u6811\\u7684\\u53f6\\u5b50\\u548c\\u82bd\\u3002\\u522b\\u540d\\u8336\\u3001\\u69da\\uff08ji\\u01ce\\uff09\\uff0c\\u8317\\uff0c\\u8348\\uff08chu\\u01ce\\u2026<\\/p>\\n\\n<a id=\\\"t::-6439\\\" href=\\\"javascript:;\\\" class=\\\"follow meta-item zg-follow\\\"><i class=\\\"z-icon-follow\\\"><\\/i>\\u5173\\u6ce8<\\/a>\\n\\n<\\/div><\\/div>\"]\n"
         + "}";
-
     JSONObject jsonObject = JSON.parseObject(json);
+    JSONArray msg = jsonObject.getJSONArray("msg");
+    List<Topic> collect = msg.parallelStream().map(o -> {
+      String obj = (String) o;
+      Document document = Jsoup.parse(obj);
+      Element element = document.select("a[target=_blank]").first();
+      String href = element.attr("href");
+      String comment = document.getElementsByTag("p").first().text();
+      String tid = StrUtil.subAfter(href, "/topic/", true);
+      String desc = element.select("strong").text();
+      Topic topic = new Topic();
+      topic.setTopicId(Integer.parseInt(tid));
+      topic.setTopicName(desc);
+      topic.setComment(comment);
+      return topic;
+    }).collect(Collectors.toList());
 
-    System.out.println(jsonObject);
+    collect.forEach(System.out::println);
   }
 
+
+  @Test
+  public void tes() {
+    String str = "https://api.zhihu.com/search_v3?advert_count=0\\u0026correction=1\\u0026lc_idx=54\\u0026limit=20\\u0026offset=84\\u0026q=%E8%AF%9D%E9%A2%98\\u0026search_hash_id=02f56d1fa459f05583c134324af5ce50\\u0026show_all_topics=1\\u0026t=topic\\u0026vertical_info=0%2C0%2C0%2C0%2C0%2C0%2C0%2C0%2C0%2C0";
+
+    String replace = str.replace("\\u0026", "&");
+    System.out.println(replace);
+  }
 }
