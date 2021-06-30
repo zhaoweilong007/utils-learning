@@ -24,8 +24,14 @@ spring:
       connection-timeout: 30000
       #测试查询
       connection-test-query: SELECT 1
-
-
+  rabbitmq:
+    addresses: localhost
+    host: 5672
+    username: guest
+    password: guest
+  redis:
+    host: 6379
+    database: 0
 logging:
   level:
     root: info

@@ -1,10 +1,10 @@
 package com.zwl;
-import java.util.Date;
 
-import com.zwl.jsoup.Answer;
 import com.zwl.jsoup.WebCrawler;
-import com.zwl.mapper.AnswerMapper;
-import com.zwl.mapper.TopicMapper;
+import com.zwl.jsoup.mapper.AnswerMapper;
+import com.zwl.jsoup.mapper.TopicMapper;
+import com.zwl.jsoup.model.Answer;
+import java.util.Date;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

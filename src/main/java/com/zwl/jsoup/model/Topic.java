@@ -1,4 +1,4 @@
-package com.zwl.jsoup;
+package com.zwl.jsoup.model;
 
 import cn.org.atool.fluent.mybatis.annotation.FluentMybatis;
 import cn.org.atool.fluent.mybatis.annotation.TableId;

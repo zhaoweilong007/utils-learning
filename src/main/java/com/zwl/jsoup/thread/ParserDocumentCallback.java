@@ -1,4 +1,4 @@
-package com.zwl.jsoup;
+package com.zwl.jsoup.thread;
 
 import com.google.common.util.concurrent.FutureCallback;
 import java.util.concurrent.BlockingQueue;

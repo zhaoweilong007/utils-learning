@@ -1,4 +1,4 @@
-package com.zwl.jsoup;
+package com.zwl.jsoup.thread;
 
 import java.io.IOException;
 import java.util.Objects;

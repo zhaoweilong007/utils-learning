@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
+import com.zwl.jsoup.model.Topic;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -67,13 +68,6 @@ public class JsoupTest {
     System.out.println(string);
 
 
-  }
-
-
-  @Test
-  public void webCrawling() throws Exception {
-    WebCrawler webCrawling = new WebCrawler();
-    webCrawling.start("");
   }
 
   private static final String topicUrl = "https://www.zhihu.com/topics";

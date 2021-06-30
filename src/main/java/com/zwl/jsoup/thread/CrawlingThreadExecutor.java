@@ -1,4 +1,4 @@
-package com.zwl.jsoup;
+package com.zwl.jsoup.thread;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;

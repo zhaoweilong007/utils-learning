@@ -1,4 +1,4 @@
-package com.zwl.jsoup;
+package com.zwl.jsoup.thread;
 
 import com.google.common.collect.Maps;
 import java.util.HashMap;
