@@ -64,4 +64,15 @@ public class Answer implements IEntity {
    */
   private Date createDate;
 
+
+  /**
+   * 是否是神回复 0否 1是
+   */
+  private Boolean isGodReplies;
+
+  /**
+   * 回答内容
+   */
+  private String content;
+
 }

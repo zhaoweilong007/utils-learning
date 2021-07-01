@@ -14,26 +14,24 @@ import com.zwl.jsoup.mapper.AnswerMapper;
 import com.zwl.jsoup.mapper.TopicMapper;
 import com.zwl.jsoup.model.Answer;
 import com.zwl.jsoup.model.AnswerEvent;
+import com.zwl.jsoup.model.DomParseEvent;
+import com.zwl.jsoup.model.ParseDTO;
 import com.zwl.jsoup.model.QueryAnswerEvent;
 import com.zwl.jsoup.model.Topic;
 import com.zwl.jsoup.thread.CrawlingThreadExecutor;
-import com.zwl.jsoup.thread.DocumentParseThread;
 import com.zwl.jsoup.thread.DownloadDocumentThread;
 import com.zwl.jsoup.thread.ParserDocumentCallback;
-import com.zwl.jsoup.thread.ResultCallBack;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.BlockingQueue;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.ConnectionPool;
@@ -45,6 +43,7 @@ import okhttp3.ResponseBody;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -74,21 +73,23 @@ public class WebCrawler {
   @Autowired
   AnswerMapper answerMapper;
 
+  @Autowired
+  ParserDocumentCallback passerDocumentCallback;
 
-  public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36";
+  private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36";
   private static final String TOPICLIST = "https://www.zhihu.com/node/TopicsPlazzaListV2";
   private static final String TOPICURL = "https://www.zhihu.com/topics";
-  public static final String ANSWERURL = "https://www.zhihu.com/api/v4/topics/19860414/feeds/essence?limit=50&offset=%d";
-  public static final String ANSWER_FEED = "https://www.zhihu.com/question/%d/answer/%d";
-  private final BlockingQueue<DocumentParseThread> parseThreads = new LinkedBlockingQueue<>(1000);
+  private static final String ANSWERURL = "https://www.zhihu.com/api/v4/topics/19860414/feeds/essence?limit=50&offset=%d";
+  private static final String ANSWER_FEED = "https://www.zhihu.com/question/%d/answer/%d";
+
   private final ListeningExecutorService listeningExecutorService;
-  private final AtomicInteger count = new AtomicInteger(0);
+
   private final OkHttpClient client;
+
   private String cookie;
 
 
   public WebCrawler() {
-    int availableProcessors = Runtime.getRuntime().availableProcessors();
     ThreadFactory threadFactory = new ThreadFactoryBuilder()
         .setNameFormat("crawling-pool-")
         //未铺货异常处理
@@ -96,9 +97,9 @@ public class WebCrawler {
             (t, e) -> log.error("未捕获异常：{}，线程名称：{}", e.getMessage(), t.getName()))
         .build();
     listeningExecutorService = MoreExecutors.
-        listeningDecorator(new CrawlingThreadExecutor(availableProcessors, availableProcessors * 10,
-            10, TimeUnit.SECONDS,
-            new LinkedBlockingQueue<>(1000), threadFactory, new CallerRunsPolicy()));
+        listeningDecorator(new CrawlingThreadExecutor(30, 100,
+            30, TimeUnit.SECONDS,
+            new LinkedBlockingQueue<>(3000), threadFactory, new CallerRunsPolicy()));
 
     client = new OkHttpClient.Builder().
         connectTimeout(5, TimeUnit.SECONDS)
@@ -110,10 +111,20 @@ public class WebCrawler {
           Request request = chain.request();
           Request newRequest = request.newBuilder()
               .header("user-agent", USER_AGENT)
+//              .header("Cookie", cookie)
               .build();
           return chain.proceed(newRequest);
         })
         .build();
+  }
+
+
+  /**
+   * 开始任务
+   */
+  public void start(String cookie) throws Exception {
+    this.cookie = cookie;
+    startCrawlingZhihu();
   }
 
 
@@ -234,8 +245,8 @@ public class WebCrawler {
    * @return 话题集合
    * @throws Exception
    */
-  private void getAllTopicList() throws Exception {
-    log.info(">>>>>>>>>>>>>>>>>>>>>>>>>开始获取所有话题列表>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+  private void startCrawlingZhihu() throws Exception {
+    log.info(">>>>>>>>>>>>>>>>>>>>>>>>>开始获取所有根话题列表>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     List<Topic> topics = topicMapper
         .listEntity(topicMapper.query().select.end().where.parentId().eq(0).end());
     ConcurrentLinkedQueue<Topic> rootTopic;
@@ -244,6 +255,7 @@ public class WebCrawler {
     } else {
       rootTopic = new ConcurrentLinkedQueue<>(topics);
     }
+    log.info(">>>>>>>>>>>>>>>>>>>>>>>>>开始解析所有跟话题下子话题>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     parseTopic(rootTopic);
   }
 
@@ -253,21 +265,25 @@ public class WebCrawler {
    *
    * @throws IOException
    */
-  @EventListener
+  @EventListener(value = QueryAnswerEvent.class)
   @Async
   public void getAllAnswer(QueryAnswerEvent queryAnswerEvent) throws IOException {
     Topic topic = ((Topic) queryAnswerEvent.getSource());
+    log.info(">>>>>>>>>>>>>>>start:事件:获取【{}】话题下所有高赞答案<<<<<<<<<<<<<<<<<<", topic.getTopicName());
     boolean flg = true;
     int offset = 0;
     while (flg) {
       Request get = new Builder().url(String.format(ANSWERURL, offset)).build();
-      String json = client.newCall(get)
-          .execute().body()
+      String json = Objects.requireNonNull(client.newCall(get)
+          .execute().body())
           .string();
 
       JSONObject object = JSON.parseObject(json);
       JSONObject paging = object.getJSONObject("paging");
       JSONArray data = object.getJSONArray("data");
+      if (paging == null || data == null || data.isEmpty()) {
+        break;
+      }
 
       boolean isNotEnd = !paging.getBoolean("is_end");
       boolean allMatch = data.parallelStream().allMatch(o1 -> {
@@ -313,45 +329,70 @@ public class WebCrawler {
       log.info("批量插入问题回答：{}", batch);
       applicationEventPublisher.publishEvent(new AnswerEvent(answers));
     }
+    log.info(">>>>>>>>>>>>>>>end:事件:获取【{}】话题下所有高赞答案<<<<<<<<<<<<<<<<<<", topic.getTopicName());
   }
 
-  private final ParserDocumentCallback passerDocumentCallback = new ParserDocumentCallback(
-      parseThreads, count);
 
-  private final ResultCallBack resultCallBack = new ResultCallBack();
-
-  @EventListener
+  /**
+   * 解析topic下高赞回答
+   *
+   * @param answerEvent
+   */
+  @EventListener(AnswerEvent.class)
   @Async
   public void parseTopic(AnswerEvent answerEvent) {
+    log.info(">>>>>>>>>>>>>>>start:事件：下载高赞答案回答>>>>>>>>>>>>>>>>>");
     List<Answer> answers = (List<Answer>) answerEvent.getSource();
     answers.forEach(answer -> {
-      ListenableFuture<Document> listenableFuture = listeningExecutorService
-          .submit(new DownloadDocumentThread(client, answer.getAnswerUrl()));
-      count.incrementAndGet();
+      ListenableFuture<ParseDTO> listenableFuture = listeningExecutorService
+          .submit(new DownloadDocumentThread(client, answer));
       Futures
           .addCallback(listenableFuture, passerDocumentCallback, listeningExecutorService);
     });
+    log.info(">>>>>>>>>>>>>>>end:事件：下载高赞答案回答>>>>>>>>>>>>>>>>>");
   }
+
 
   /**
-   * 开始任务
+   * 解析回答dom
+   *
+   * @param domParseEvent
    */
-  public void start(String cookie) throws Exception {
-    this.cookie = cookie;
-    getAllTopicList();
-
-    while (count.get() != 0) {
-      DocumentParseThread parseThread;
-      try {
-        parseThread = parseThreads.take();
-        ListenableFuture<Map<String, Object>> listenableFuture = listeningExecutorService
-            .submit(parseThread);
-        Futures.addCallback(listenableFuture, resultCallBack, listeningExecutorService);
-      } catch (InterruptedException e) {
-        log.error("队列InterruptedException:{}", e.getMessage());
-      }
+  @EventListener(DomParseEvent.class)
+  @Async
+  public void doDocumentParse(DomParseEvent domParseEvent) {
+    log.info("===================start:doDocumentParse:解析document===================");
+    ParseDTO parseDTO = (ParseDTO) domParseEvent.getSource();
+    Document document = parseDTO.getDocument();
+    Answer answer = parseDTO.getAnswer();
+    if (document == null) {
+      return;
     }
+    Element element = document.select(".RichText.ztext.CopyrightRichText-richText").first();
+    if (element == null) {
+      return;
+    }
+    List<Node> childNodes = element.childNodes();
+    StringBuilder buffer = new StringBuilder();
+    buffer.append("# ").append(answer.getQuestion()).append("\n\n");
+    for (Node node : childNodes) {
+      Element ele = (Element) node;
+      String nodeName = node.nodeName();
+      if ("figure".equals(nodeName)) {
+        Element img = ele.select("img").first();
+        ele.replaceWith(img);
+        buffer.append(img.toString());
+      } else {
+        buffer.append(ele);
+      }
+      buffer.append("\n\n");
+    }
+
+    Answer update = new Answer()
+        .setId(answer.getId())
+        .setContent(buffer.toString())
+        .setIsGodReplies(buffer.length() < 1500);
+    answerMapper.updateById(update);
+    log.info("===================end:doDocumentParse:解析document===================");
   }
-
-
 }

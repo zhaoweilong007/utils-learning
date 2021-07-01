@@ -25,6 +25,7 @@ import okhttp3.ResponseBody;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
@@ -186,10 +187,31 @@ public class JsoupTest {
 
 
   @Test
-  public void tes() {
-    String str = "https://api.zhihu.com/search_v3?advert_count=0\\u0026correction=1\\u0026lc_idx=54\\u0026limit=20\\u0026offset=84\\u0026q=%E8%AF%9D%E9%A2%98\\u0026search_hash_id=02f56d1fa459f05583c134324af5ce50\\u0026show_all_topics=1\\u0026t=topic\\u0026vertical_info=0%2C0%2C0%2C0%2C0%2C0%2C0%2C0%2C0%2C0";
+  public void tes() throws IOException {
+    Document document = Jsoup.connect("https://www.zhihu.com/question/null/answer/68751178")
+        .get();
+    if (document == null) {
+      return;
+    }
+    Element element = document.select(".RichText.ztext.CopyrightRichText-richText").first();
+    if (element == null) {
+      return;
+    }
+    List<Node> childNodes = element.childNodes();
+    StringBuilder buffer = new StringBuilder();
+    for (Node node : childNodes) {
+      Element ele = (Element) node;
+      String nodeName = node.nodeName();
+      if ("figure".equals(nodeName)) {
+        Element img = ele.select("img").first();
+        ele.replaceWith(img);
+        buffer.append(img.toString());
+      } else {
+        buffer.append(ele.toString());
+      }
+      buffer.append("\n\n");
 
-    String replace = str.replace("\\u0026", "&");
-    System.out.println(replace);
+    }
+    System.out.println(buffer.toString());
   }
 }

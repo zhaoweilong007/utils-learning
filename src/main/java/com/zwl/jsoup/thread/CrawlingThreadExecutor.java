@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 线程池
+ *
  * @author zhao_wei_long
  * @since 2021/6/25
  **/
@@ -20,6 +21,11 @@ public class CrawlingThreadExecutor extends ThreadPoolExecutor {
   private final AtomicInteger alive = new AtomicInteger();
   private final AtomicLong totalTime = new AtomicLong();
   private final ThreadLocal<Long> startTIme = new ThreadLocal<>();
+
+  public CrawlingThreadExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime,
+      TimeUnit unit, BlockingQueue<Runnable> workQueue, RejectedExecutionHandler handler) {
+    super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
+  }
 
   public CrawlingThreadExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime,
       TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory,
@@ -43,7 +49,7 @@ public class CrawlingThreadExecutor extends ThreadPoolExecutor {
 
   @Override
   protected void terminated() {
-    log.info("全部执行完成，总耗时：{}ms，平均耗时：{}ms",
+    log.info("{}全部执行完成，总耗时：{}ms，平均耗时：{}ms", Thread.currentThread().getName(),
         totalTime,
         totalTime.get() / alive.get());
     super.terminated();

@@ -1,38 +1,30 @@
 package com.zwl.jsoup.thread;
 
 import com.google.common.util.concurrent.FutureCallback;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.atomic.AtomicInteger;
+import com.zwl.jsoup.model.DomParseEvent;
+import com.zwl.jsoup.model.ParseDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
 /**
  * 解析dom回调
+ *
  * @author zhao_wei_long
  * @since 2021/6/25
  **/
 @Slf4j
-public class ParserDocumentCallback implements FutureCallback<Document> {
+@Component
+public class ParserDocumentCallback implements FutureCallback<ParseDTO> {
 
-  private final BlockingQueue<DocumentParseThread> parseThreads;
-  private final AtomicInteger count;
-
-  public ParserDocumentCallback(BlockingQueue<DocumentParseThread> parseThreads,
-      AtomicInteger count) {
-    this.parseThreads = parseThreads;
-    this.count = count;
-  }
+  @Autowired
+  ApplicationEventPublisher applicationEventPublisher;
 
   @Override
-  public void onSuccess(@Nullable Document document) {
-    try {
-      parseThreads.put(new DocumentParseThread(document));
-      count.decrementAndGet();
-    } catch (InterruptedException e) {
-      log.error("InterruptedException:{}", e.getMessage());
-      Thread.currentThread().interrupt();
-    }
+  public void onSuccess(ParseDTO parseDTO) {
+    log.info("====================触发回调==================");
+    applicationEventPublisher.publishEvent(new DomParseEvent(parseDTO));
   }
 
   @Override

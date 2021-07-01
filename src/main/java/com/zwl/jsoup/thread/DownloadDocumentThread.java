@@ -1,5 +1,7 @@
 package com.zwl.jsoup.thread;
 
+import com.zwl.jsoup.model.Answer;
+import com.zwl.jsoup.model.ParseDTO;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.Callable;
@@ -9,7 +11,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 /**
  * 下载document
@@ -19,16 +20,17 @@ import org.jsoup.nodes.Document;
  **/
 @AllArgsConstructor
 @Slf4j
-public class DownloadDocumentThread implements Callable<Document> {
+public class DownloadDocumentThread implements Callable<ParseDTO> {
 
   private final OkHttpClient okHttpClient;
-  private final String url;
+  private final Answer answer;
 
   @Override
-  public Document call() throws IOException {
-    Request request = new Builder().url(url).get().build();
+  public ParseDTO call() throws IOException {
+    Request request = new Builder().url(answer.getAnswerUrl()).get().build();
     String string = Objects.requireNonNull(okHttpClient.newCall(request).execute().body()).string();
-    return Jsoup.parse(string);
+     Jsoup.parse(string);
+    return new ParseDTO(Jsoup.parse(string), answer);
   }
 
 }
