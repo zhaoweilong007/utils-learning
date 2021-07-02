@@ -24,7 +24,9 @@ public class ParserDocumentCallback implements FutureCallback<ParseDTO> {
   @Override
   public void onSuccess(ParseDTO parseDTO) {
     log.info("====================触发回调==================");
-    applicationEventPublisher.publishEvent(new DomParseEvent(parseDTO));
+    if (parseDTO != null) {
+      applicationEventPublisher.publishEvent(new DomParseEvent(parseDTO));
+    }
   }
 
   @Override

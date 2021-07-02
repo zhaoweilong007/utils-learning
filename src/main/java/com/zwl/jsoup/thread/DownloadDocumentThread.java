@@ -3,13 +3,13 @@ package com.zwl.jsoup.thread;
 import com.zwl.jsoup.model.Answer;
 import com.zwl.jsoup.model.ParseDTO;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.concurrent.Callable;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
+import okhttp3.ResponseBody;
 import org.jsoup.Jsoup;
 
 /**
@@ -28,9 +28,14 @@ public class DownloadDocumentThread implements Callable<ParseDTO> {
   @Override
   public ParseDTO call() throws IOException {
     Request request = new Builder().url(answer.getAnswerUrl()).get().build();
-    String string = Objects.requireNonNull(okHttpClient.newCall(request).execute().body()).string();
-     Jsoup.parse(string);
-    return new ParseDTO(Jsoup.parse(string), answer);
+    String json;
+    try (ResponseBody responseBody = okHttpClient.newCall(request).execute().body()) {
+      if (responseBody == null) {
+        return null;
+      }
+      json = responseBody.string();
+    }
+    return new ParseDTO(Jsoup.parse(json), answer);
   }
 
 }

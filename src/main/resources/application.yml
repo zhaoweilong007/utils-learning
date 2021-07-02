@@ -35,3 +35,4 @@ spring:
 logging:
   level:
     root: info
+#    com.zwl.jsoup.mapper: debug
