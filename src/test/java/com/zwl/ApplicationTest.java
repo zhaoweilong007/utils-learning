@@ -7,9 +7,9 @@ import com.zwl.jsoup.WebCrawler;
 import com.zwl.jsoup.mapper.AnswerMapper;
 import com.zwl.jsoup.mapper.TopicMapper;
 import com.zwl.jsoup.model.Answer;
+import com.zwl.jsoup.service.AnswerService;
 import java.io.InputStream;
 import java.util.List;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +36,12 @@ public class ApplicationTest {
   @Autowired
   WebCrawler webCrawler;
 
+  @Autowired
+  AnswerService answerService;
+
   /**
    * 知乎爬虫启动入口
+   *
    * @throws Exception
    */
   @Test
@@ -54,8 +58,7 @@ public class ApplicationTest {
     }.getType());
     answers.forEach(System.out::println);
 
-    int save = answerMapper.save(answers);
-    Assert.assertTrue(save>0);
+    boolean save = answerService.saveBatch(answers);
   }
 
 }

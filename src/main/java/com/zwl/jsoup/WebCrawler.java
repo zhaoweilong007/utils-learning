@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -16,6 +17,8 @@ import com.zwl.jsoup.model.DomParseEvent;
 import com.zwl.jsoup.model.ParseDTO;
 import com.zwl.jsoup.model.QueryAnswerEvent;
 import com.zwl.jsoup.model.Topic;
+import com.zwl.jsoup.service.AnswerService;
+import com.zwl.jsoup.service.TopicService;
 import com.zwl.jsoup.thread.CrawlingThreadExecutor;
 import java.io.IOException;
 import java.time.Instant;
@@ -67,9 +70,15 @@ public class WebCrawler {
   @Autowired
   TopicMapper topicMapper;
 
+  @Autowired
+  TopicService topicService;
+
   @Qualifier("answerMapper")
   @Autowired
   AnswerMapper answerMapper;
+
+  @Autowired
+  AnswerService answerService;
 
   private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36";
   private static final String TOPICLIST = "https://www.zhihu.com/node/TopicsPlazzaListV2";
@@ -182,9 +191,10 @@ public class WebCrawler {
     topics.forEach(topic -> {
           applicationEventPublisher.publishEvent(new QueryAnswerEvent(topic));
           listeningExecutorService.execute(() -> {
-            Integer one = topicMapper
-                .count(topicMapper.query().where.topicId().eq(topic.getTopicId()).end());
-            if (one == 0) {
+            Integer count = topicMapper
+                .selectCount(
+                    Wrappers.<Topic>lambdaQuery().eq(Topic::getTopicId, topic.getTopicId()));
+            if (count == 0) {
               topicMapper.insert(topic);
             }
           });
@@ -223,10 +233,10 @@ public class WebCrawler {
 
     List<Topic> topics = queue.parallelStream().filter(topic -> {
       Integer one = topicMapper
-          .count(topicMapper.query().where.topicId().eq(topic.getTopicId()).end());
+          .selectCount(Wrappers.<Topic>lambdaQuery().eq(Topic::getTopicId, topic.getTopicId()));
       return one == 0;
     }).collect(Collectors.toList());
-    topicMapper.insertBatch(topics);
+    topicService.saveBatch(topics);
     return queue;
   }
 
@@ -237,7 +247,7 @@ public class WebCrawler {
   private void startCrawlingZhiHu(Boolean loadFromDBOnTopic) throws Exception {
     log.info(">>>>>>>>>>>>>>>>>>>>>>>>>开始获取所有根话题列表>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     List<Topic> topics = topicMapper
-        .listEntity(topicMapper.query().select.end().where.parentId().eq(0).end());
+        .selectList(Wrappers.<Topic>lambdaQuery().eq(Topic::getParentId, 0));
     ConcurrentLinkedQueue<Topic> rootTopic;
     if (topics.isEmpty()) {
       rootTopic = getRootTopic();
@@ -246,7 +256,7 @@ public class WebCrawler {
     }
     log.info(">>>>>>>>>>>>>>>>>>>>>>>>>开始解析所有跟话题下子话题>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     if (loadFromDBOnTopic) {
-      List<Topic> topicList = topicMapper.listEntity(topicMapper.query().select.end());
+      List<Topic> topicList = topicService.list();
       topicList
           .forEach(topic -> applicationEventPublisher.publishEvent(new QueryAnswerEvent(topic)));
       log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>事件全部推动完成<<<<<<<<<<<<<<<<<<<<<<<");
@@ -348,17 +358,18 @@ public class WebCrawler {
   public void parseTopic(AnswerEvent answerEvent) {
     log.info(">>>>>>>>>>>>>>>start:事件：下载高赞回答>>>>>>>>>>>>>>>>>");
     List<Answer> answerList = (List<Answer>) answerEvent.getSource();
-    int insertBatch = 0;
+    boolean insertBatch = false;
     try {
       answerList = answerList.stream().filter(answer -> {
         Integer count = answerMapper
-            .count(answerMapper.query().where.answerId().eq(answer.getAnswerId()).end());
+            .selectCount(
+                Wrappers.<Answer>lambdaQuery().eq(Answer::getAnswerId, answer.getAnswerId()));
         return count == 0;
       }).collect(Collectors.toList());
       if (answerList.isEmpty()) {
         return;
       }
-      insertBatch = answerMapper.save(answerList);
+      insertBatch = answerService.saveBatch(answerList);
       answerList.forEach(answer -> listeningExecutorService
           .execute(() -> {
             Request request = new Builder().url(answer.getAnswerUrl()).get().build();

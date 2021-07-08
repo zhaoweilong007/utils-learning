@@ -1,8 +1,7 @@
 package com.zwl.jsoup.model;
 
-import cn.org.atool.fluent.mybatis.annotation.FluentMybatis;
-import cn.org.atool.fluent.mybatis.annotation.TableId;
-import cn.org.atool.fluent.mybatis.base.IEntity;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import java.util.Date;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -13,10 +12,9 @@ import lombok.experimental.Accessors;
  **/
 @Data
 @Accessors(chain = true)
-@FluentMybatis(table = "answer")
-public class Answer implements IEntity {
+public class Answer {
 
-  @TableId
+  @TableId(type = IdType.AUTO)
   private Long id;
 
   /**
