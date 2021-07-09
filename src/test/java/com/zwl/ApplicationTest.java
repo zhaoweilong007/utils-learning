@@ -39,19 +39,10 @@ public class ApplicationTest {
   @Autowired
   AnswerService answerService;
 
-  /**
-   * 知乎爬虫启动入口
-   *
-   * @throws Exception
-   */
-  @Test
-  public void runZhiHuCrawler() throws Exception {
-    webCrawler.start(true);
-  }
 
   @Test
   public void insertBatch() {
-    InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("json");
+    InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("answer.json");
     assert inputStream != null;
     String json = IoUtil.readUtf8(inputStream);
     List<Answer> answers = JSON.parseObject(json, new TypeReference<List<Answer>>() {

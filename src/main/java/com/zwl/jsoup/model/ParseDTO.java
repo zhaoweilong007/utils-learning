@@ -1,5 +1,6 @@
 package com.zwl.jsoup.model;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +13,9 @@ import org.jsoup.nodes.Document;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ParseDTO {
+public class ParseDTO implements Serializable {
 
-  private Document document;
+  private String document;
 
   private Answer answer;
 

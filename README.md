@@ -47,6 +47,19 @@
 
 ## jsoup
 
+### 爬取知乎所有话题下高赞回答
+
+#### 运行方式
+
+**导入MySQL**
+运行sql文件中的两条语句。answer为答案表，存放所有答案，topic存放所有话题
+
+**运行rocketmq**
+在docker文件中，使用`docker-compose up`启动rocketmq，需要在broker.conf修改brokerIP1为本机地址
+
+**启动spring应用**
+启动后执行com.zwl.jsoup.WebCrawler的run方法，开始爬取知乎
+
 [jsoup测试](src/main/java/com/zwl/jsoup/JsoupTest.java)
 
 > 解析dom
@@ -58,10 +71,8 @@
 ## hutool
 
 > java工具类库
-> 
+
 [hutool测试](src/main/java/com/zwl/hutool/HutoolTest.java)
-
-
 
 ## redission
 

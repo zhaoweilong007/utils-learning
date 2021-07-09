@@ -2,6 +2,7 @@ package com.zwl.jsoup.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -12,7 +13,7 @@ import lombok.experimental.Accessors;
  **/
 @Data
 @Accessors(chain = true)
-public class Answer {
+public class Answer implements Serializable {
 
   @TableId(type = IdType.AUTO)
   private Long id;
@@ -25,12 +26,12 @@ public class Answer {
   /**
    * 回答id
    */
-  private Integer answerId;
+  private Long answerId;
 
   /**
    * 问题id
    */
-  private Integer questionId;
+  private Long questionId;
 
   /**
    * 回答url

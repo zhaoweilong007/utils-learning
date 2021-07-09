@@ -4,6 +4,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <artifactId>utils-learning</artifactId>
   <groupId>com.zwl</groupId>
+  <name>utils-leaning</name>
   <version>1.0</version>
   <description>utils各种工具类学习demo</description>
   <modelVersion>4.0.0</modelVersion>
@@ -14,7 +15,7 @@
     <maven.compiler.target>8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring-boot.version>2.3.7.RELEASE</spring-boot.version>
+    <spring-boot.version>2.4.0</spring-boot.version>
   </properties>
 
   <dependencies>
@@ -23,7 +24,15 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.rocketmq</groupId>
+      <artifactId>rocketmq-spring-boot-starter</artifactId>
+      <version>2.2.0</version>
+    </dependency>
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -155,41 +164,57 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
-          <!--        <annotationProcessorPaths>
-                    <path>
-                      <groupId>org.mapstruct</groupId>
-                      <artifactId>mapstruct-processor</artifactId>
-                      <version>1.4.2.Final</version>
-                    </path>
-                    <path>
-                      <artifactId>lombok</artifactId>
-                      <groupId>org.projectlombok</groupId>
-                      <version>1.18.20</version>
-                    </path>
-                    <path>
-                      <groupId>com.github.atool</groupId>
-                      <artifactId>fluent-mybatis-processor</artifactId>
-                      <version>1.4.7</version>
-                    </path>
-                  </annotationProcessorPaths>-->
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.mapstruct</groupId>
+              <artifactId>mapstruct-processor</artifactId>
+              <version>1.4.2.Final</version>
+            </path>
+            <path>
+              <artifactId>lombok</artifactId>
+              <groupId>org.projectlombok</groupId>
+              <version>1.18.20</version>
+            </path>
+          </annotationProcessorPaths>
+          <skip>true</skip>
         </configuration>
       </plugin>
-
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M3</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>2.3.7.RELEASE</version>
+        <version>${spring-boot.version}</version>
         <configuration>
           <mainClass>com.zwl.Application</mainClass>
+          <image>
+            <!--配置镜像名称-->
+            <name>hkxx.icu:8080/demo/${project.name}:${project.version}</name>
+            <!--镜像打包完成后自动推送到镜像仓库-->
+            <publish>true</publish>
+          </image>
+          <docker>
+            <!--Docker远程管理地址-->
+            <host>http://hkxx.icu:2375</host>
+            <!--不使用TLS访问-->
+            <tlsVerify>false</tlsVerify>
+            <!--Docker推送镜像仓库配置-->
+            <publishRegistry>
+              <!--推送镜像仓库用户名-->
+              <username></username>
+              <!--推送镜像仓库密码-->
+              <password></password>
+              <!--推送镜像仓库地址-->
+              <url>http://hkxx.icu:8080</url>
+            </publishRegistry>
+          </docker>
         </configuration>
-        <executions>
-          <execution>
-            <id>repackage</id>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>

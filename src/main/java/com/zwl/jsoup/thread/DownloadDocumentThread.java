@@ -35,7 +35,7 @@ public class DownloadDocumentThread implements Callable<ParseDTO> {
       }
       json = responseBody.string();
     }
-    return new ParseDTO(Jsoup.parse(json), answer);
+    return new ParseDTO(json, answer);
   }
 
 }

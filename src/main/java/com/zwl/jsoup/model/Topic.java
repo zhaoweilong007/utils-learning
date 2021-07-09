@@ -1,7 +1,9 @@
 package com.zwl.jsoup.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import java.io.Serializable;
 import lombok.Data;
 
 /**
@@ -10,7 +12,7 @@ import lombok.Data;
  * @since 2021/6/25
  **/
 @Data
-public class Topic{
+public class Topic implements Serializable {
 
   @TableId(type = IdType.AUTO)
   private Long id;

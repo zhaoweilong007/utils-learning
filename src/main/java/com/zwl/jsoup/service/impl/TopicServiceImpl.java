@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * @author ZhaoWeiLong
  * @since 2021-07-08 17:59:52
  */
-@Service("topicService")
+@Service
 public class TopicServiceImpl extends ServiceImpl<TopicMapper, Topic> implements TopicService {
 
 }
