@@ -66,6 +66,9 @@
 
 ## mapstruct
 
+[mapstruct测试](src/main/java/com/zwl/mapstruct/MapperTest.java)
+
+
 > bean转换工具类
 
 ## hutool
