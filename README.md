@@ -47,6 +47,8 @@
 
 ## jsoup
 
+> 爬取html解析dom，用于网络爬取
+
 ### 爬取知乎所有话题下高赞回答
 
 #### 运行方式
@@ -61,8 +63,6 @@
 启动后执行com.zwl.jsoup.WebCrawler的run方法，开始爬取知乎
 
 [jsoup测试](src/main/java/com/zwl/jsoup/JsoupTest.java)
-
-> 解析dom
 
 ## mapstruct
 
@@ -81,3 +81,4 @@
 
 > redis分布式锁
 
+[redission测试](src/main/java/com/zwl/redis/RedissionTest.java)
