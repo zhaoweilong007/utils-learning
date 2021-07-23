@@ -39,7 +39,9 @@
 
 ## disruptor
 
-> 高性能队列
+> 是一个高性能异步处理框架，轻量级的JMS，时间-监听模式的实现
+
+- [disruptor案例](src/main/java/com/zwl/disruptor/DisruptorTest.java)
 
 ## netty
 
