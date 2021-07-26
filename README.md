@@ -54,7 +54,11 @@
 
 ## netty
 
-> 高性能的网路框架，在NIO的基础上对其封装的
+> 高性能的网路框架，在NIO的基础上对其封装的,NIO是同步非阻塞，面向缓冲流的IO
+
+
+- [Netty测试案例](src/main/java/com/zwl/netty/NettyTest.java)
+
 
 ## jsoup
 
