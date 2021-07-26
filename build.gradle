@@ -1,11 +1,15 @@
 // Gradle 构建本身需要的配置（例如插件仓库）
-
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.3.12.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id("org.springframework.boot") version "2.3.12.RELEASE" apply false
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
 }
 
+dependencyManagement {
+    imports {
+        mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+    }
+}
 
 repositories {
     mavenLocal()
@@ -15,6 +19,7 @@ repositories {
 }
 
 dependencies {
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: '2.3.12.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.4.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis:2.4.0'
     implementation 'org.apache.rocketmq:rocketmq-spring-boot-starter:2.2.0'
@@ -39,6 +44,8 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java:8.0.22'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.4.0'
     compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.mapstruct:mapstruct:1.4.2.Final'
 }
 
 group = 'com.zwl'

@@ -39,7 +39,16 @@
 
 ## disruptor
 
-> 是一个高性能异步处理框架，轻量级的JMS，时间-监听模式的实现
+> 是一个高性能异步处理框架，轻量级的JMS，生产-消费模型，支持点对点和发布订阅
+
+
+**等待策略**
+- BlockingWaitStrategy 是最低效的策略，但其对 CPU 的消耗最小并且在各种不同部署环境中能提供更加一致的性能表现；
+  
+- SleepingWaitStrategy 的性能表现跟 BlockingWaitStrategy 差不多，对 CPU 的消耗也类似，但其对生产者线程的影响最小，适合用于异步日志类似的场景；
+
+- YieldingWaitStrategy 的性能是最好的，适合用于低延迟的系统。在要求极高性能且事件处理线数小于 CPU 逻辑核心数的场景中，推荐使用此策略；例如：CPU 开启超线程的特性。
+
 
 - [disruptor案例](src/main/java/com/zwl/disruptor/DisruptorTest.java)
 
