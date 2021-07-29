@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2021/7/26
  **/
 @Slf4j
-public class ClientHandler extends ChannelInboundHandlerAdapter {
+public class MyClientHandler extends ChannelInboundHandlerAdapter {
 
 
   /**

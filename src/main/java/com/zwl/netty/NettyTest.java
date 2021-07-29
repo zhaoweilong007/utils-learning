@@ -12,7 +12,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -111,7 +110,7 @@ public class NettyTest {
           @Override
           protected void initChannel(Channel channel) throws Exception {
 //            channel.pipeline().addLast(new StringEncoder());
-            channel.pipeline().addLast(new ClientHandler());
+            channel.pipeline().addLast(new MyClientHandler());
           }
         });
     connect(bootstrap, "127.0.0.1", 1000, MAX_RETRY);
