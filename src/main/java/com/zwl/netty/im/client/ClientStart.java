@@ -2,6 +2,7 @@ package com.zwl.netty.im.client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,9 @@ public class ClientStart {
     Bootstrap bootstrap = new Bootstrap();
     bootstrap.group(loopGroup)
         .channel(NioSocketChannel.class)
+        .option(ChannelOption.SO_KEEPALIVE, true)
+        .option(ChannelOption.TCP_NODELAY, true)
+        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,5000)
         .handler(new ChannelInitializer<NioSocketChannel>() {
           @Override
           protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {

@@ -22,10 +22,7 @@ public class PacketCode {
   public static final int MAGIC_NUMS = 0x12345678;
 
   public static ConcurrentHashMap<Byte, Serializer> serializerMap = new ConcurrentHashMap<>();
-  public static ConcurrentHashMap<Byte, Class<? extends Packet>> packetMap = new ConcurrentHashMap<>();
-
   static {
-    packetMap.put(Command.LOGIN_REQUEST, LoginRequestPacket.class);
     serializerMap.put(SerializerAlgorithm.JSON, new JsonSerializerImpl());
   }
 
@@ -37,6 +34,18 @@ public class PacketCode {
    */
   public static ByteBuf encode(Packet packet) {
     ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
+    byte[] bytes = Serializer.DEFAULT.serialize(packet);
+    //数据包由五部分组成 魔数、版本号、序列化算法、指令、数据长度、数据内容
+    byteBuf.writeInt(MAGIC_NUMS);
+    byteBuf.writeByte(packet.getVersion());
+    byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());
+    byteBuf.writeByte(packet.getCommand());
+    byteBuf.writeInt(bytes.length);
+    byteBuf.writeBytes(bytes);
+    return byteBuf;
+  }
+
+  public static ByteBuf encode(ByteBuf byteBuf, Packet packet) {
     byte[] bytes = Serializer.DEFAULT.serialize(packet);
     //数据包由五部分组成 魔数、版本号、序列化算法、指令、数据长度、数据内容
     byteBuf.writeInt(MAGIC_NUMS);
@@ -81,7 +90,13 @@ public class PacketCode {
    * @return 获取请求类型
    */
   private static Class<? extends Packet> getRequestType(byte command) {
-    return packetMap.get(command);
+    Command[] values = Command.values();
+    for (Command val : values) {
+      if (val.getCode().byteValue()==command) {
+        return val.getClazz();
+      }
+    }
+    return null;
   }
 
   private static Serializer getSerializer(byte serialize) {
