@@ -4,7 +4,7 @@
 
 ## excel
 
-> excel读取和写入
+> excel读取和写入,阿里的easyExcel
 
 - [excel测试](src/main/java/com/zwl/excel/ExcelTest.java)
 
@@ -18,11 +18,17 @@
 
 ## json
 
-> 序列化和反序列化
+> 序列化和反序列化,主要使用google的gson和阿里的fastjson
 
 - [gson](src/main/java/com/zwl/json/gson/GsonTest.java)
 
 - [fastjson](src/main/java/com/zwl/json/fastjson/JSONTest.java)
+
+## protocol buffer
+
+> 高性能的序列化工具，实现自动编码、解码，体积和速度比xml和json更小、更快，由google开源
+
+- [protocol buffer 测试](src/main/java/com/zwl/protocolbuffer/ProtocTest.java)
 
 ## guava
 
@@ -39,12 +45,13 @@
 
 ## disruptor
 
-> 是一个高性能异步处理框架，轻量级的JMS，生产-消费模型，支持点对点和发布订阅
+> 是美团开源的一个高性能异步处理框架，轻量级的JMS，生产-消费模型，支持点对点和发布订阅，高性能队列
 
 
 **等待策略**
+
 - BlockingWaitStrategy 是最低效的策略，但其对 CPU 的消耗最小并且在各种不同部署环境中能提供更加一致的性能表现；
-  
+
 - SleepingWaitStrategy 的性能表现跟 BlockingWaitStrategy 差不多，对 CPU 的消耗也类似，但其对生产者线程的影响最小，适合用于异步日志类似的场景；
 
 - YieldingWaitStrategy 的性能是最好的，适合用于低延迟的系统。在要求极高性能且事件处理线数小于 CPU 逻辑核心数的场景中，推荐使用此策略；例如：CPU 开启超线程的特性。
@@ -56,9 +63,7 @@
 
 > 高性能的网路框架，在NIO的基础上对其封装的,NIO是同步非阻塞，面向缓冲流的IO
 
-
 - [Netty测试案例](src/main/java/com/zwl/netty/NettyTest.java)
-
 
 ## jsoup
 
@@ -81,10 +86,9 @@
 
 ## mapstruct
 
+> bean转换工具类，比如DTO转换entity，entity转换VO等等
+
 [mapstruct测试](src/main/java/com/zwl/mapstruct/MapperTest.java)
-
-
-> bean转换工具类
 
 ## hutool
 

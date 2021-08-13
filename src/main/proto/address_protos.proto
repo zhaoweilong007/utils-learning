@@ -1,0 +1,63 @@
+syntax = 'proto2';
+
+package com.zwl.protocolbuffer;
+
+option java_package = 'com.zwl.protocolbuffer';
+option java_generate_equals_and_hash = true;
+option java_multiple_files = true;
+option java_outer_classname = 'AddressBookProtos';
+option java_string_check_utf8 = true;
+option java_generic_services = true;
+
+
+message Person{
+
+  /**
+  名称
+   */
+  optional string name = 1;
+
+  /**
+  用户id
+   */
+  optional int32  id = 2;
+
+  /**
+  邮箱
+   */
+  optional string email = 3;
+
+
+  /**
+  手机类型
+   */
+  enum PhoneType{
+    mobile = 0;
+    home = 1;
+    work = 2;
+  }
+
+  /**
+  手机号码类
+   */
+  message PhoneNumber{
+    /**
+    手机号码
+     */
+    optional string number = 1;
+    /**
+    手机类型
+     */
+    optional PhoneType type = 2 [default = home];
+  }
+
+  /**
+  手机
+   */
+  repeated PhoneNumber phones = 4;
+}
+
+
+message AddressBook{
+  repeated  Person person = 1;
+}

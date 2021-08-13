@@ -187,5 +187,8 @@
     <orderEntry type="library" name="Maven: org.jodd:jodd-core:5.0.13" level="project" />
     <orderEntry type="library" name="Maven: org.mapstruct:mapstruct:1.4.2.Final" level="project" />
     <orderEntry type="library" name="Maven: com.lmax:disruptor:3.4.4" level="project" />
+    <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.15.3" level="project" />
+    <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java-util:3.15.3" level="project" />
+    <orderEntry type="library" name="Maven: com.googlecode.protobuf-java-format:protobuf-java-format:1.4" level="project" />
   </component>
 </module>

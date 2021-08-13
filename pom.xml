@@ -10,7 +10,6 @@
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
-    <java.version>11</java.version>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -144,8 +143,22 @@
       <artifactId>disruptor</artifactId>
       <version>3.4.4</version>
     </dependency>
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>3.15.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java-util</artifactId>
+      <version>3.15.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.googlecode.protobuf-java-format</groupId>
+      <artifactId>protobuf-java-format</artifactId>
+      <version>1.4</version>
+    </dependency>
     <!--utils end-->
-
   </dependencies>
 
   <dependencyManagement>
@@ -162,6 +175,56 @@
 
   <build>
     <plugins>
+      <!--配置protobuf插件 自动编译生成代码-->
+      <plugin>
+        <groupId>org.xolstice.maven.plugins</groupId>
+        <artifactId>protobuf-maven-plugin</artifactId>
+        <version>0.6.1</version>
+        <extensions>true</extensions>
+        <configuration>
+          <protoSourceRoot>${project.basedir}/src/main/proto</protoSourceRoot>
+          <outputDirectory>${project.build.sourceDirectory}</outputDirectory>
+          <clearOutputDirectory>false</clearOutputDirectory>
+          <temporaryProtoFileDirectory>${project.build.directory}/protoc-dependencies
+          </temporaryProtoFileDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>add-protobuf-generate-sources</id>
+            <phase>generate-sources</phase>
+            <configuration>
+              <sources>
+                <source>target/generated-sources/protobuf/java</source>
+              </sources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-protobuf-generate-test-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>target/generated-test-sources/protobuf/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -169,7 +232,8 @@
         <configuration>
           <source>11</source>
           <target>11</target>
-          <skip>true</skip>
+          <release>11</release>
+          <!--配置注解处理器-->
           <annotationProcessorPaths>
             <path>
               <artifactId>lombok</artifactId>
@@ -185,9 +249,10 @@
         </configuration>
       </plugin>
       <plugin>
+        <!--跳过测试-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version>
+        <version>2.22.2</version>
         <configuration>
           <skip>true</skip>
         </configuration>
@@ -203,6 +268,7 @@
             </goals>
           </execution>
         </executions>
+        <!--配置远程镜像仓库-->
         <configuration>
           <mainClass>com.zwl.Application</mainClass>
           <image>
