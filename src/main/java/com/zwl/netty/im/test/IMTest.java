@@ -3,7 +3,7 @@ package com.zwl.netty.im.test;
 import com.zwl.netty.im.model.LoginRequestPacket;
 import com.zwl.netty.im.model.Packet;
 import com.zwl.netty.im.serialize.JsonSerializerImpl;
-import com.zwl.netty.im.serialize.PacketCode;
+import com.zwl.netty.im.utils.PacketCode;
 import io.netty.buffer.ByteBuf;
 import org.junit.Assert;
 import org.junit.Test;

@@ -77,7 +77,7 @@ public class WebCrawler implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
     boolean loadFromDBOnTopic = true;
-    startCrawlingZhiHu(loadFromDBOnTopic);
+//    startCrawlingZhiHu(loadFromDBOnTopic);
   }
 
 

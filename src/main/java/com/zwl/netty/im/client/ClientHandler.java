@@ -2,8 +2,9 @@ package com.zwl.netty.im.client;
 
 import com.zwl.netty.im.model.LoginRequestPacket;
 import com.zwl.netty.im.model.LoginRespPacket;
+import com.zwl.netty.im.model.MessageResponsePacket;
 import com.zwl.netty.im.model.Packet;
-import com.zwl.netty.im.serialize.PacketCode;
+import com.zwl.netty.im.utils.PacketCode;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -54,6 +55,9 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
       LoginRespPacket respPacket = (LoginRespPacket) packet;
       token = respPacket.getToken();
       log.info(respPacket.getMsg());
+    } else if (packet instanceof MessageResponsePacket) {
+      MessageResponsePacket messageResponsePacket = (MessageResponsePacket) packet;
+      log.info("{}-收到服务器消息:{}", new Date(), messageResponsePacket.getMessage());
     }
   }
 }

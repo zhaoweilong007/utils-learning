@@ -14,14 +14,24 @@ import lombok.Getter;
 public enum Command {
 
   /**
-   * 请求
+   * 登录请求
    */
   LOGIN_REQUEST(1, LoginRequestPacket.class),
 
   /**
-   * 请求响应
+   * 登录响应
    */
-  LOGIN_RESPONSE(2, LoginRespPacket.class);
+  LOGIN_RESPONSE(2, LoginRespPacket.class),
+
+  /**
+   * 消息请求
+   */
+  MESSAGE_REQUEST(3, MessageRequestPacket.class),
+
+  /**
+   * 消息响应
+   */
+  MESSAGE_RESPONSE(4, MessageResponsePacket.class);
 
 
   private final Integer code;

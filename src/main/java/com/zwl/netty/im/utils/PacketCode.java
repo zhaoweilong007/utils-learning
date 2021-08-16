@@ -1,8 +1,11 @@
-package com.zwl.netty.im.serialize;
+package com.zwl.netty.im.utils;
 
 import com.zwl.netty.im.model.Command;
 import com.zwl.netty.im.model.LoginRequestPacket;
 import com.zwl.netty.im.model.Packet;
+import com.zwl.netty.im.serialize.JsonSerializerImpl;
+import com.zwl.netty.im.serialize.Serializer;
+import com.zwl.netty.im.serialize.SerializerAlgorithm;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import java.util.concurrent.ConcurrentHashMap;
