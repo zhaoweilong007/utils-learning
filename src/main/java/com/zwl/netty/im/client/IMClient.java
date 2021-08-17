@@ -1,7 +1,11 @@
 package com.zwl.netty.im.client;
 
+import com.zwl.netty.im.handler.LoginRespHandler;
+import com.zwl.netty.im.handler.MessageRespHandler;
+import com.zwl.netty.im.handler.PacketDecode;
+import com.zwl.netty.im.handler.PacketEnCode;
+import com.zwl.netty.im.model.LoginRequestPacket;
 import com.zwl.netty.im.model.MessageRequestPacket;
-import com.zwl.netty.im.utils.LogUtils;
 import com.zwl.netty.im.utils.PacketCode;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -10,10 +14,13 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import java.util.Scanner;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -23,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2021/7/29
  **/
 @Slf4j
-public class ClientStart {
+public class IMClient {
 
 
   public static void main(String[] args) {
@@ -34,13 +41,17 @@ public class ClientStart {
         .option(ChannelOption.SO_KEEPALIVE, true)
         .option(ChannelOption.TCP_NODELAY, true)
         .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
-        .handler(new ChannelInitializer<NioSocketChannel>() {
+        .handler(new ChannelInitializer<SocketChannel>() {
           @Override
-          protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
-            nioSocketChannel.pipeline().addLast(new ClientHandler());
+          protected void initChannel(SocketChannel socketChannel) {
+            socketChannel.pipeline().addLast(new PacketDecode());
+            socketChannel.pipeline().addLast(new LoginRespHandler());
+            socketChannel.pipeline().addLast(new MessageRespHandler());
+            socketChannel.pipeline().addLast(new PacketEnCode());
           }
         });
     connect(boot, 3);
+
   }
 
   /**
@@ -54,6 +65,7 @@ public class ClientStart {
       if (future.isSuccess()) {
         log.info("客户端连接成功....");
         Channel channel = ((ChannelFuture) future).channel();
+        login(channel);
         startConsoleThread(channel);
       } else {
         if (retry > 0) {
@@ -67,6 +79,26 @@ public class ClientStart {
 
   private static final ExecutorService EXECUTORS = Executors.newSingleThreadExecutor();
 
+
+  @SneakyThrows
+  private static void login(Channel channel) {
+    Scanner scanner = new Scanner(System.in);
+    log.info("请输入账号登录系统。。。");
+    String username = scanner.nextLine();
+    log.info("请输入密码。。。");
+    String pwd = scanner.nextLine();
+    LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+    loginRequestPacket.setUserId(UUID.randomUUID().toString().replace("-", ""));
+    loginRequestPacket.setUserName(username);
+    loginRequestPacket.setPassword(pwd);
+    ChannelFuture channelFuture = channel
+        .writeAndFlush(loginRequestPacket);
+    channelFuture.await();
+    if (!channelFuture.isSuccess()) {
+      login(channel);
+    }
+  }
+
   /**
    * 开始读取用户输入
    *
@@ -75,15 +107,12 @@ public class ClientStart {
   private static void startConsoleThread(Channel channel) {
     EXECUTORS.execute(() -> {
       while (!EXECUTORS.isShutdown()) {
-        if (LogUtils.hasLogin(channel)) {
-          log.info("输入消息:");
-          Scanner scanner = new Scanner(System.in);
-          String line = scanner.nextLine();
-          MessageRequestPacket packet = new MessageRequestPacket();
-          packet.setMessage(line);
-          ByteBuf byteBuf = PacketCode.encode(channel.alloc().buffer(), packet);
-          channel.writeAndFlush(byteBuf);
-        }
+        System.out.println("输入消息：");
+        Scanner scanner = new Scanner(System.in);
+        String line = scanner.nextLine();
+        MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
+        messageRequestPacket.setMessage(line);
+        channel.writeAndFlush(messageRequestPacket);
       }
     });
   }

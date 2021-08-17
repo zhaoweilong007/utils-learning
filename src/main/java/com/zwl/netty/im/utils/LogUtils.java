@@ -3,6 +3,8 @@ package com.zwl.netty.im.utils;
 import com.zwl.netty.im.model.Attributes;
 import io.netty.channel.Channel;
 import io.netty.util.Attribute;
+import io.netty.util.AttributeKey;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 登录工具类
@@ -10,6 +12,7 @@ import io.netty.util.Attribute;
  * @author ZhaoWeiLong
  * @since 2021/8/16
  **/
+@Slf4j
 public class LogUtils {
 
   /**
@@ -29,7 +32,8 @@ public class LogUtils {
    * @param channel
    */
   public static void markAsLogin(Channel channel) {
-    channel.attr(Attributes.LOGIN).setIfAbsent(true);
+    Boolean flg = channel.attr(Attributes.LOGIN).getAndSet(true);
+    log.info("设置登录状态：{}",flg);
   }
 
 }
