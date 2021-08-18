@@ -1,9 +1,10 @@
 package com.zwl.netty.im.utils;
 
 import com.zwl.netty.im.model.Attributes;
+import com.zwl.netty.im.model.Session;
 import io.netty.channel.Channel;
-import io.netty.util.Attribute;
-import io.netty.util.AttributeKey;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -15,15 +16,41 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LogUtils {
 
+  public static final Map<String, Channel> USER_ID_CHANNEL_MAP = new ConcurrentHashMap<>();
+
+
+  public static void bindSession(Session session, Channel channel) {
+    USER_ID_CHANNEL_MAP.put(session.getUserId(), channel);
+    channel.attr(Attributes.SESSION).set(session);
+  }
+
+  public static Session getSession(Channel channel) {
+    return channel.attr(Attributes.SESSION).get();
+  }
+
+  public static Channel getChannel(String userId) {
+    return USER_ID_CHANNEL_MAP.get(userId);
+  }
+
+  public static void unBindSession(Channel channel) {
+    if (hasSession(channel)) {
+      USER_ID_CHANNEL_MAP.remove(getSession(channel).getUserId());
+      channel.attr(Attributes.SESSION).set(null);
+    }
+  }
+
   /**
    * 是否已登录
    *
    * @param channel
    * @return
    */
+  public static Boolean hasSession(Channel channel) {
+    return channel.hasAttr(Attributes.SESSION);
+  }
+
   public static Boolean hasLogin(Channel channel) {
-    Attribute<Boolean> attr = channel.attr(Attributes.LOGIN);
-    return attr != null && attr.get() != null && attr.get();
+    return channel.hasAttr(Attributes.LOGIN);
   }
 
   /**
@@ -32,8 +59,7 @@ public class LogUtils {
    * @param channel
    */
   public static void markAsLogin(Channel channel) {
-    Boolean flg = channel.attr(Attributes.LOGIN).getAndSet(true);
-    log.info("设置登录状态：{}",flg);
+    channel.attr(Attributes.LOGIN).getAndSet(true);
   }
 
 }

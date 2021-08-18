@@ -3,10 +3,11 @@ package com.zwl.netty.im.handler;
 import com.zwl.netty.im.model.MessageResponsePacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 
 /**
+ * 消息响应处理器
+ *
  * @author ZhaoWeiLong
  * @since 2021/8/17
  **/
@@ -15,7 +16,7 @@ public class MessageRespHandler extends SimpleChannelInboundHandler<MessageRespo
 
   @Override
   protected void channelRead0(ChannelHandlerContext channelHandlerContext,
-      MessageResponsePacket messageResponsePacket) throws Exception {
-    log.info("{}-收到服务器消息:{}", new Date(), messageResponsePacket.getMessage());
+      MessageResponsePacket msg) {
+    log.info("{}:{} -> {}", msg.getFromUserId(), msg.getFromUserName(), msg.getMessage());
   }
 }

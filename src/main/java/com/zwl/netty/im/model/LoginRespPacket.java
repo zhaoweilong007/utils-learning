@@ -13,7 +13,7 @@ public class LoginRespPacket extends Packet {
 
   private String msg;
   private Boolean success;
-  private String token;
+  private String userId;
 
   @Override
   public Byte getCommand() {

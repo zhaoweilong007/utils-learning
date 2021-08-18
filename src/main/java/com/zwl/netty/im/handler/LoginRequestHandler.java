@@ -2,11 +2,11 @@ package com.zwl.netty.im.handler;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.crypto.digest.MD5;
-import com.alibaba.fastjson.JSON;
 import com.zwl.netty.im.model.LoginRequestPacket;
 import com.zwl.netty.im.model.LoginRespPacket;
+import com.zwl.netty.im.model.Session;
 import com.zwl.netty.im.utils.LogUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -16,43 +16,50 @@ import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 
 /**
+ * 登录请求处理器
+ *
  * @author ZhaoWeiLong
  * @since 2021/8/17
  **/
 @Slf4j
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
 
-  private static final Map<String, String> userMap = new HashMap<>() {{
-    put("zhangsan", "123456");
+  private static final Map<String, String> USER_MAP = new HashMap<>() {{
+    put("admin", "admin");
+    put("root", "root");
   }};
 
   @Override
-  protected void channelRead0(ChannelHandlerContext ctx,
-      LoginRequestPacket loginRequestPacket) throws Exception {
+  protected void channelRead0(ChannelHandlerContext ctx, LoginRequestPacket loginRequestPacket) {
     LoginRespPacket loginRespPacket = new LoginRespPacket();
     String date = new DateTime().toString(DatePattern.NORM_DATETIME_PATTERN);
     if (valid(loginRequestPacket)) {
-      //标记为已登录
-      LogUtils.markAsLogin(ctx.channel());
+      String userId = UUID.randomUUID().toString().replace("-","");
+      LogUtils.bindSession(new Session(userId, loginRequestPacket.getUserName()),
+          ctx.channel());
       log.info("{}于{}登录系统{}", loginRequestPacket.getUserName(), date, "成功");
       String message = StrUtil
-          .format("😀登录成功♥，{}你好，当前时间：{}", loginRequestPacket.getUserName(), date);
+          .format("😀登录成功♥，【{}】你好，UserId:【{}】，当前时间：{}", loginRequestPacket.getUserName(), userId,
+              date);
+      loginRespPacket.setSuccess(true);
       loginRespPacket.setMsg(message);
-      loginRespPacket.setToken(generateToken(loginRequestPacket));
+      loginRespPacket.setUserId(userId);
     } else {
       log.info("{}于{}登录系统{}", loginRequestPacket.getUserName(), date, "失败");
       loginRespPacket.setSuccess(false);
       loginRespPacket.setMsg("登录失败！请检查你的用户名密码");
     }
-    ctx.writeAndFlush(loginRespPacket);
+    ctx.channel().writeAndFlush(loginRespPacket);
   }
 
-  public String generateToken(LoginRequestPacket requestPacket) {
-    return MD5.create().digestHex(JSON.toJSONString(requestPacket));
+  @Override
+  public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+    LogUtils.unBindSession(ctx.channel());
+    super.channelInactive(ctx);
   }
 
   public Boolean valid(LoginRequestPacket requestPacket) {
-    String pwd = userMap.get(requestPacket.getUserName());
+    String pwd = USER_MAP.get(requestPacket.getUserName());
     return Objects.equals(requestPacket.getPassword(), pwd);
   }
 }

@@ -1,9 +1,12 @@
 package com.zwl.netty.im.server;
 
+import com.zwl.netty.im.handler.AuthHandler;
+import com.zwl.netty.im.handler.LeftCycleTestHandler;
 import com.zwl.netty.im.handler.LoginRequestHandler;
 import com.zwl.netty.im.handler.MessageRequestHandler;
 import com.zwl.netty.im.handler.PacketDecode;
 import com.zwl.netty.im.handler.PacketEnCode;
+import com.zwl.netty.im.handler.UnPackDeCoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -40,8 +43,11 @@ public class IMServer {
           .childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel socketChannel) {
+//              socketChannel.pipeline().addLast(new LeftCycleTestHandler());
+              socketChannel.pipeline().addLast(new UnPackDeCoder());
               socketChannel.pipeline().addLast(new PacketDecode());
               socketChannel.pipeline().addLast(new LoginRequestHandler());
+              socketChannel.pipeline().addLast(new AuthHandler());
               socketChannel.pipeline().addLast(new MessageRequestHandler());
               socketChannel.pipeline().addLast(new PacketEnCode());
             }

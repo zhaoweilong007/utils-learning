@@ -1,5 +1,6 @@
 package com.zwl.netty.im.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,9 +10,12 @@ import lombok.EqualsAndHashCode;
  **/
 @EqualsAndHashCode(callSuper = false)
 @Data
+@AllArgsConstructor
 public class MessageResponsePacket extends Packet {
 
   private String message;
+  private String fromUserId;
+  private String fromUserName;
 
   @Override
   public Byte getCommand() {

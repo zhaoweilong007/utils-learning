@@ -20,7 +20,6 @@ public class PacketEnCode extends MessageToByteEncoder<Packet> {
   @Override
   protected void encode(ChannelHandlerContext ctx, Packet packet, ByteBuf byteBuf)
       throws Exception {
-    log.debug("encode:{}", packet);
     PacketCode.encode(byteBuf, packet);
   }
 }

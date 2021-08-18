@@ -4,11 +4,10 @@ import com.zwl.netty.im.handler.LoginRespHandler;
 import com.zwl.netty.im.handler.MessageRespHandler;
 import com.zwl.netty.im.handler.PacketDecode;
 import com.zwl.netty.im.handler.PacketEnCode;
-import com.zwl.netty.im.model.LoginRequestPacket;
+import com.zwl.netty.im.handler.UnPackDeCoder;
 import com.zwl.netty.im.model.MessageRequestPacket;
-import com.zwl.netty.im.utils.PacketCode;
+import com.zwl.netty.im.utils.LogUtils;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -17,10 +16,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import java.util.Scanner;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -44,6 +41,8 @@ public class IMClient {
         .handler(new ChannelInitializer<SocketChannel>() {
           @Override
           protected void initChannel(SocketChannel socketChannel) {
+            //设置拆包，基于长度符的拆包器，根据自定义协议
+            socketChannel.pipeline().addLast(new UnPackDeCoder());
             socketChannel.pipeline().addLast(new PacketDecode());
             socketChannel.pipeline().addLast(new LoginRespHandler());
             socketChannel.pipeline().addLast(new MessageRespHandler());
@@ -65,7 +64,6 @@ public class IMClient {
       if (future.isSuccess()) {
         log.info("客户端连接成功....");
         Channel channel = ((ChannelFuture) future).channel();
-        login(channel);
         startConsoleThread(channel);
       } else {
         if (retry > 0) {
@@ -80,25 +78,6 @@ public class IMClient {
   private static final ExecutorService EXECUTORS = Executors.newSingleThreadExecutor();
 
 
-  @SneakyThrows
-  private static void login(Channel channel) {
-    Scanner scanner = new Scanner(System.in);
-    log.info("请输入账号登录系统。。。");
-    String username = scanner.nextLine();
-    log.info("请输入密码。。。");
-    String pwd = scanner.nextLine();
-    LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
-    loginRequestPacket.setUserId(UUID.randomUUID().toString().replace("-", ""));
-    loginRequestPacket.setUserName(username);
-    loginRequestPacket.setPassword(pwd);
-    ChannelFuture channelFuture = channel
-        .writeAndFlush(loginRequestPacket);
-    channelFuture.await();
-    if (!channelFuture.isSuccess()) {
-      login(channel);
-    }
-  }
-
   /**
    * 开始读取用户输入
    *
@@ -106,13 +85,15 @@ public class IMClient {
    */
   private static void startConsoleThread(Channel channel) {
     EXECUTORS.execute(() -> {
+      Scanner scanner = new Scanner(System.in);
       while (!EXECUTORS.isShutdown()) {
-        System.out.println("输入消息：");
-        Scanner scanner = new Scanner(System.in);
-        String line = scanner.nextLine();
-        MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
-        messageRequestPacket.setMessage(line);
-        channel.writeAndFlush(messageRequestPacket);
+        if (LogUtils.hasLogin(channel)) {
+          System.out.println("请输入消息(消息格式，userId+空格+消息):");
+          String line = scanner.nextLine();
+          String[] str = line.split(" ");
+          MessageRequestPacket messageRequestPacket = new MessageRequestPacket(str[0], str[1]);
+          channel.writeAndFlush(messageRequestPacket);
+        }
       }
     });
   }
