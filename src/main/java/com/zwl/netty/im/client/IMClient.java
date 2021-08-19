@@ -1,11 +1,12 @@
 package com.zwl.netty.im.client;
 
+import com.zwl.netty.im.command.ConsoleCommandManager;
+import com.zwl.netty.im.handler.CreateGroupRespHandler;
 import com.zwl.netty.im.handler.LoginRespHandler;
 import com.zwl.netty.im.handler.MessageRespHandler;
 import com.zwl.netty.im.handler.PacketDecode;
 import com.zwl.netty.im.handler.PacketEnCode;
 import com.zwl.netty.im.handler.UnPackDeCoder;
-import com.zwl.netty.im.model.MessageRequestPacket;
 import com.zwl.netty.im.utils.LogUtils;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -46,6 +47,7 @@ public class IMClient {
             socketChannel.pipeline().addLast(new PacketDecode());
             socketChannel.pipeline().addLast(new LoginRespHandler());
             socketChannel.pipeline().addLast(new MessageRespHandler());
+            socketChannel.pipeline().addLast(new CreateGroupRespHandler());
             socketChannel.pipeline().addLast(new PacketEnCode());
           }
         });
@@ -84,15 +86,12 @@ public class IMClient {
    * @param channel
    */
   private static void startConsoleThread(Channel channel) {
+    ConsoleCommandManager consoleCommandManager = new ConsoleCommandManager();
+    Scanner scanner = new Scanner(System.in);
     EXECUTORS.execute(() -> {
-      Scanner scanner = new Scanner(System.in);
-      while (!EXECUTORS.isShutdown()) {
+      while (!EXECUTORS.isShutdown() && channel.isActive()) {
         if (LogUtils.hasLogin(channel)) {
-          System.out.println("请输入消息(消息格式，userId+空格+消息):");
-          String line = scanner.nextLine();
-          String[] str = line.split(" ");
-          MessageRequestPacket messageRequestPacket = new MessageRequestPacket(str[0], str[1]);
-          channel.writeAndFlush(messageRequestPacket);
+          consoleCommandManager.exec(scanner, channel);
         }
       }
     });

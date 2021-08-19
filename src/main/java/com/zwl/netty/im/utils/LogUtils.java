@@ -3,6 +3,7 @@ package com.zwl.netty.im.utils;
 import com.zwl.netty.im.model.Attributes;
 import com.zwl.netty.im.model.Session;
 import io.netty.channel.Channel;
+import io.netty.channel.group.DefaultChannelGroup;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,16 @@ import lombok.extern.slf4j.Slf4j;
 public class LogUtils {
 
   public static final Map<String, Channel> USER_ID_CHANNEL_MAP = new ConcurrentHashMap<>();
+  public static final Map<String, DefaultChannelGroup> GROUP_MAP = new ConcurrentHashMap<>();
 
+
+  public static void putGroupMap(String groupId, DefaultChannelGroup channelGroup) {
+    GROUP_MAP.put(groupId, channelGroup);
+  }
+
+  public static DefaultChannelGroup getGroupMap(String groupId) {
+    return GROUP_MAP.get(groupId);
+  }
 
   public static void bindSession(Session session, Channel channel) {
     USER_ID_CHANNEL_MAP.put(session.getUserId(), channel);

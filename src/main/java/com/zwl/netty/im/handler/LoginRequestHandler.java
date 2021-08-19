@@ -3,6 +3,7 @@ package com.zwl.netty.im.handler;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.zwl.netty.im.model.LoginRequestPacket;
 import com.zwl.netty.im.model.LoginRespPacket;
@@ -34,7 +35,8 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
     LoginRespPacket loginRespPacket = new LoginRespPacket();
     String date = new DateTime().toString(DatePattern.NORM_DATETIME_PATTERN);
     if (valid(loginRequestPacket)) {
-      String userId = UUID.randomUUID().toString().replace("-","");
+      String uuid = IdUtil.randomUUID();
+      String userId = uuid.substring(0, uuid.indexOf("-"));
       LogUtils.bindSession(new Session(userId, loginRequestPacket.getUserName()),
           ctx.channel());
       log.info("{}于{}登录系统{}", loginRequestPacket.getUserName(), date, "成功");

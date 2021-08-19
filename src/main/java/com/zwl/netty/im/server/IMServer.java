@@ -1,7 +1,8 @@
 package com.zwl.netty.im.server;
 
 import com.zwl.netty.im.handler.AuthHandler;
-import com.zwl.netty.im.handler.LeftCycleTestHandler;
+import com.zwl.netty.im.handler.CreateGroupRequestHandler;
+import com.zwl.netty.im.handler.LoginOutRequestHandler;
 import com.zwl.netty.im.handler.LoginRequestHandler;
 import com.zwl.netty.im.handler.MessageRequestHandler;
 import com.zwl.netty.im.handler.PacketDecode;
@@ -49,6 +50,8 @@ public class IMServer {
               socketChannel.pipeline().addLast(new LoginRequestHandler());
               socketChannel.pipeline().addLast(new AuthHandler());
               socketChannel.pipeline().addLast(new MessageRequestHandler());
+              socketChannel.pipeline().addLast(new CreateGroupRequestHandler());
+              socketChannel.pipeline().addLast(new LoginOutRequestHandler());
               socketChannel.pipeline().addLast(new PacketEnCode());
             }
           });

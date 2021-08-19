@@ -23,15 +23,41 @@ public enum Command {
    */
   LOGIN_RESPONSE(2, LoginRespPacket.class),
 
+  LOGIN_OUT_REQUEST(3, LoginOutRequestPacket.class),
+
+  LOGIN_OUT_RESPONSE(4, LoginOutRequestPacket.class),
+
   /**
    * 消息请求
    */
-  MESSAGE_REQUEST(3, MessageRequestPacket.class),
+  MESSAGE_REQUEST(5, MessageRequestPacket.class),
 
   /**
    * 消息响应
    */
-  MESSAGE_RESPONSE(4, MessageResponsePacket.class);
+  MESSAGE_RESPONSE(6, MessageResponsePacket.class),
+
+  /**
+   * 创建群聊请求
+   */
+  CREATE_GROUP_REQUEST(7, CreateGroupRequestPacket.class),
+
+  /**
+   * 创建群聊响应
+   */
+  CREATE_GROUP_RESPONSE(8, CreateGroupRespPacket.class),
+
+  JOIN_GROUP_REQUEST(9, JoinGroupReqPacket.class),
+
+  JOIN_GROUP_RESPONSE(10, JoinGroupRespPacket.class),
+
+  QUIT_GROUP_REQUEST(10, QuitGroupReqPacket.class),
+
+  QUIT_GROUP_RESPONSE(11, QuitGroupRespPacket.class),
+
+  LIST_GROUP_REQUEST(12, ListGroupReqPacket.class),
+
+  LIST_GROUP_RESPONSE(13, ListGroupRespPacket.class);
 
 
   private final Integer code;
