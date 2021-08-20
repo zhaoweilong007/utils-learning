@@ -1,6 +1,7 @@
 package com.zwl.netty.im.handler;
 
 import com.zwl.netty.im.model.CreateGroupRespPacket;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +13,12 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2021/8/19
  **/
 @Slf4j
+@Sharable
 public class CreateGroupRespHandler extends
     SimpleChannelInboundHandler<CreateGroupRespPacket> {
+
+  public static final CreateGroupRespHandler INSTANCE = new CreateGroupRespHandler();
+
 
   @Override
   protected void channelRead0(ChannelHandlerContext ctx,

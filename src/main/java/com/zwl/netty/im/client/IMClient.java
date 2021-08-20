@@ -1,11 +1,9 @@
 package com.zwl.netty.im.client;
 
 import com.zwl.netty.im.command.ConsoleCommandManager;
-import com.zwl.netty.im.handler.CreateGroupRespHandler;
+import com.zwl.netty.im.handler.IMHandler;
 import com.zwl.netty.im.handler.LoginRespHandler;
-import com.zwl.netty.im.handler.MessageRespHandler;
-import com.zwl.netty.im.handler.PacketDecode;
-import com.zwl.netty.im.handler.PacketEnCode;
+import com.zwl.netty.im.handler.PacketCodecHandler;
 import com.zwl.netty.im.handler.UnPackDeCoder;
 import com.zwl.netty.im.utils.LogUtils;
 import io.netty.bootstrap.Bootstrap;
@@ -44,11 +42,9 @@ public class IMClient {
           protected void initChannel(SocketChannel socketChannel) {
             //设置拆包，基于长度符的拆包器，根据自定义协议
             socketChannel.pipeline().addLast(new UnPackDeCoder());
-            socketChannel.pipeline().addLast(new PacketDecode());
-            socketChannel.pipeline().addLast(new LoginRespHandler());
-            socketChannel.pipeline().addLast(new MessageRespHandler());
-            socketChannel.pipeline().addLast(new CreateGroupRespHandler());
-            socketChannel.pipeline().addLast(new PacketEnCode());
+            socketChannel.pipeline().addLast(PacketCodecHandler.INSTANCE);
+            socketChannel.pipeline().addLast(LoginRespHandler.INSTANCE);
+            socketChannel.pipeline().addLast(IMHandler.INSTANCE);
           }
         });
     connect(boot, 3);

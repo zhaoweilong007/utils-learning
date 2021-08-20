@@ -1,6 +1,7 @@
 package com.zwl.netty.im.handler;
 
 import com.zwl.netty.im.utils.LogUtils;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +13,10 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2021/8/18
  **/
 @Slf4j
+@Sharable
 public class AuthHandler extends ChannelInboundHandlerAdapter {
 
+  public static final AuthHandler INSTANCE = new AuthHandler();
 
   @Override
   public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {

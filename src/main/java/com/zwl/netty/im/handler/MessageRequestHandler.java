@@ -5,6 +5,7 @@ import com.zwl.netty.im.model.MessageResponsePacket;
 import com.zwl.netty.im.model.Session;
 import com.zwl.netty.im.utils.LogUtils;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,11 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2021/8/17
  **/
 @Slf4j
+@Sharable
 public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRequestPacket> {
+
+  public static final MessageRequestHandler INSTANCE = new MessageRequestHandler();
+
 
   @Override
   protected void channelRead0(ChannelHandlerContext ctx,
@@ -37,7 +42,7 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
       responsePacket.setFromUserName("服务器");
       responsePacket.setFromUserId("");
       responsePacket.setMessage(String.format("用户%s不在线，发送失败", toUserId));
-      ctx.channel().writeAndFlush(responsePacket);
+      ctx.writeAndFlush(responsePacket);
     }
 
   }

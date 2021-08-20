@@ -1,24 +1,26 @@
 package com.zwl.netty.im.model;
 
-import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 加入群聊请求
+ * 群聊消息响应
+ *
  * @author ZhaoWeiLong
- * @since 2021/8/19
+ * @since 2021/8/20
  **/
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class JoinGroupReqPacket extends Packet {
+public class GroupMessageRespPacket extends Packet {
+
+  private String message;
 
   private String groupId;
 
-  private List<String> userIds;
+  private Session fromUser;
 
   @Override
   public Byte getCommand() {
-    return Command.JOIN_GROUP_REQUEST.getCode().byteValue();
+    return Command.GROUP_MESSAGE_RESPONSE.getCode().byteValue();
   }
 }

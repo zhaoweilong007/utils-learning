@@ -57,9 +57,14 @@ public enum Command {
 
   LIST_GROUP_REQUEST(12, ListGroupReqPacket.class),
 
-  LIST_GROUP_RESPONSE(13, ListGroupRespPacket.class);
+  LIST_GROUP_RESPONSE(13, ListGroupRespPacket.class),
 
+  RESULT_RESPONSE(14, ResultRespPacket.class),
+
+  GROUP_MESSAGE_REQUEST(15, GroupMessageReqPacket.class),
+
+  GROUP_MESSAGE_RESPONSE(16, GroupMessageRespPacket.class);
 
   private final Integer code;
   private final Class<? extends Packet> clazz;
-}
+  }

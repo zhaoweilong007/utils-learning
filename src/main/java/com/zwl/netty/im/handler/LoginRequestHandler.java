@@ -9,6 +9,7 @@ import com.zwl.netty.im.model.LoginRequestPacket;
 import com.zwl.netty.im.model.LoginRespPacket;
 import com.zwl.netty.im.model.Session;
 import com.zwl.netty.im.utils.LogUtils;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import java.util.HashMap;
@@ -23,7 +24,10 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2021/8/17
  **/
 @Slf4j
+@Sharable
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
+
+  public static final LoginRequestHandler INSTANCE = new LoginRequestHandler();
 
   private static final Map<String, String> USER_MAP = new HashMap<>() {{
     put("admin", "admin");
@@ -51,7 +55,8 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
       loginRespPacket.setSuccess(false);
       loginRespPacket.setMsg("登录失败！请检查你的用户名密码");
     }
-    ctx.channel().writeAndFlush(loginRespPacket);
+    //缩短时间传播路径
+    ctx.writeAndFlush(loginRespPacket);
   }
 
   @Override

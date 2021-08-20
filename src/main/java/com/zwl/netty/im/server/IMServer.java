@@ -2,11 +2,15 @@ package com.zwl.netty.im.server;
 
 import com.zwl.netty.im.handler.AuthHandler;
 import com.zwl.netty.im.handler.CreateGroupRequestHandler;
+import com.zwl.netty.im.handler.GroupMessageReqHandler;
+import com.zwl.netty.im.handler.IMHandler;
+import com.zwl.netty.im.handler.JoinGroupReqHandler;
+import com.zwl.netty.im.handler.ListGroupReqHandler;
 import com.zwl.netty.im.handler.LoginOutRequestHandler;
 import com.zwl.netty.im.handler.LoginRequestHandler;
 import com.zwl.netty.im.handler.MessageRequestHandler;
-import com.zwl.netty.im.handler.PacketDecode;
-import com.zwl.netty.im.handler.PacketEnCode;
+import com.zwl.netty.im.handler.PacketCodecHandler;
+import com.zwl.netty.im.handler.QuitGroupReqHandler;
 import com.zwl.netty.im.handler.UnPackDeCoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -44,15 +48,11 @@ public class IMServer {
           .childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel socketChannel) {
-//              socketChannel.pipeline().addLast(new LeftCycleTestHandler());
               socketChannel.pipeline().addLast(new UnPackDeCoder());
-              socketChannel.pipeline().addLast(new PacketDecode());
-              socketChannel.pipeline().addLast(new LoginRequestHandler());
-              socketChannel.pipeline().addLast(new AuthHandler());
-              socketChannel.pipeline().addLast(new MessageRequestHandler());
-              socketChannel.pipeline().addLast(new CreateGroupRequestHandler());
-              socketChannel.pipeline().addLast(new LoginOutRequestHandler());
-              socketChannel.pipeline().addLast(new PacketEnCode());
+              socketChannel.pipeline().addLast(PacketCodecHandler.INSTANCE);
+              socketChannel.pipeline().addLast(LoginRequestHandler.INSTANCE);
+              socketChannel.pipeline().addLast(AuthHandler.INSTANCE);
+              socketChannel.pipeline().addLast(IMHandler.INSTANCE);
             }
           });
 
