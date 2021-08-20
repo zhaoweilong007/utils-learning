@@ -63,8 +63,13 @@ public enum Command {
 
   GROUP_MESSAGE_REQUEST(15, GroupMessageReqPacket.class),
 
-  GROUP_MESSAGE_RESPONSE(16, GroupMessageRespPacket.class);
+  GROUP_MESSAGE_RESPONSE(16, GroupMessageRespPacket.class),
+
+  HEART_BEAT_REQUEST(17, HeartBeatRequestPacket.class),
+
+  HEART_BEAT_RESPONSE(18, HeartBeatRespPacket.class);
+
 
   private final Integer code;
   private final Class<? extends Packet> clazz;
-  }
+}

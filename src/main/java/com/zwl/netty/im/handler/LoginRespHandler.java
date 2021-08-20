@@ -26,40 +26,11 @@ public class LoginRespHandler extends SimpleChannelInboundHandler<LoginRespPacke
 
 
   @Override
-  public void channelActive(ChannelHandlerContext ctx) throws Exception {
-    login(ctx.channel());
-    super.channelActive(ctx);
-  }
-
-  @Override
   public void channelInactive(ChannelHandlerContext ctx) throws Exception {
     log.info("客户端连接被关闭");
     super.channelInactive(ctx);
   }
 
-  /**
-   * 登录
-   *
-   * @param channel
-   * @throws Exception
-   */
-  private void login(Channel channel) throws Exception {
-    Scanner scanner = new Scanner(System.in);
-    log.info("请输入账号登录系统。。。");
-    String username = scanner.nextLine();
-    log.info("请输入密码。。。");
-    String pwd = scanner.nextLine();
-    LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
-    loginRequestPacket.setUserId(UUID.randomUUID().toString().replace("-", ""));
-    loginRequestPacket.setUserName(username);
-    loginRequestPacket.setPassword(pwd);
-    ChannelFuture channelFuture = channel
-        .writeAndFlush(loginRequestPacket);
-    channelFuture.sync();
-    if (!channelFuture.isSuccess()) {
-      login(channel);
-    }
-  }
 
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, LoginRespPacket loginRespPacket) {

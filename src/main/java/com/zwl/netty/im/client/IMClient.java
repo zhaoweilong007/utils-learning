@@ -1,7 +1,12 @@
 package com.zwl.netty.im.client;
 
 import com.zwl.netty.im.command.ConsoleCommandManager;
+import com.zwl.netty.im.command.LoginCommand;
+import com.zwl.netty.im.handler.HeartBeatRequestHandler;
+import com.zwl.netty.im.handler.HeartBeatRespHandler;
+import com.zwl.netty.im.handler.HeartBeatTimerHandler;
 import com.zwl.netty.im.handler.IMHandler;
+import com.zwl.netty.im.handler.IMIdleStateHandler;
 import com.zwl.netty.im.handler.LoginRespHandler;
 import com.zwl.netty.im.handler.PacketCodecHandler;
 import com.zwl.netty.im.handler.UnPackDeCoder;
@@ -15,6 +20,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import java.util.Scanner;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import lombok.extern.slf4j.Slf4j;
@@ -41,9 +47,13 @@ public class IMClient {
           @Override
           protected void initChannel(SocketChannel socketChannel) {
             //设置拆包，基于长度符的拆包器，根据自定义协议
+            socketChannel.pipeline().addLast(new IMIdleStateHandler());
             socketChannel.pipeline().addLast(new UnPackDeCoder());
             socketChannel.pipeline().addLast(PacketCodecHandler.INSTANCE);
+            socketChannel.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
+            socketChannel.pipeline().addLast(HeartBeatRespHandler.INSTANCE);
             socketChannel.pipeline().addLast(LoginRespHandler.INSTANCE);
+            socketChannel.pipeline().addLast(HeartBeatTimerHandler.INSTANCE);
             socketChannel.pipeline().addLast(IMHandler.INSTANCE);
           }
         });
@@ -75,6 +85,7 @@ public class IMClient {
 
   private static final ExecutorService EXECUTORS = Executors.newSingleThreadExecutor();
 
+  private static final CountDownLatch countDownLatch = new CountDownLatch(1);
 
   /**
    * 开始读取用户输入
@@ -82,12 +93,21 @@ public class IMClient {
    * @param channel
    */
   private static void startConsoleThread(Channel channel) {
+    LoginCommand loginCommand = new LoginCommand();
     ConsoleCommandManager consoleCommandManager = new ConsoleCommandManager();
     Scanner scanner = new Scanner(System.in);
     EXECUTORS.execute(() -> {
-      while (!EXECUTORS.isShutdown() && channel.isActive()) {
+      while (!EXECUTORS.isShutdown()) {
         if (LogUtils.hasLogin(channel)) {
-          consoleCommandManager.exec(scanner, channel);
+          try {
+            countDownLatch.await();
+            consoleCommandManager.exec(scanner, channel);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        } else {
+          loginCommand.exec(scanner, channel);
+          countDownLatch.countDown();
         }
       }
     });

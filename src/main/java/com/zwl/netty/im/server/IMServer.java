@@ -1,16 +1,13 @@
 package com.zwl.netty.im.server;
 
 import com.zwl.netty.im.handler.AuthHandler;
-import com.zwl.netty.im.handler.CreateGroupRequestHandler;
-import com.zwl.netty.im.handler.GroupMessageReqHandler;
+import com.zwl.netty.im.handler.HeartBeatRequestHandler;
+import com.zwl.netty.im.handler.HeartBeatRespHandler;
+import com.zwl.netty.im.handler.HeartBeatTimerHandler;
 import com.zwl.netty.im.handler.IMHandler;
-import com.zwl.netty.im.handler.JoinGroupReqHandler;
-import com.zwl.netty.im.handler.ListGroupReqHandler;
-import com.zwl.netty.im.handler.LoginOutRequestHandler;
+import com.zwl.netty.im.handler.IMIdleStateHandler;
 import com.zwl.netty.im.handler.LoginRequestHandler;
-import com.zwl.netty.im.handler.MessageRequestHandler;
 import com.zwl.netty.im.handler.PacketCodecHandler;
-import com.zwl.netty.im.handler.QuitGroupReqHandler;
 import com.zwl.netty.im.handler.UnPackDeCoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -48,9 +45,13 @@ public class IMServer {
           .childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel socketChannel) {
+              socketChannel.pipeline().addLast(new IMIdleStateHandler());
               socketChannel.pipeline().addLast(new UnPackDeCoder());
               socketChannel.pipeline().addLast(PacketCodecHandler.INSTANCE);
               socketChannel.pipeline().addLast(LoginRequestHandler.INSTANCE);
+              socketChannel.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
+              socketChannel.pipeline().addLast(HeartBeatRespHandler.INSTANCE);
+              socketChannel.pipeline().addLast(HeartBeatTimerHandler.INSTANCE);
               socketChannel.pipeline().addLast(AuthHandler.INSTANCE);
               socketChannel.pipeline().addLast(IMHandler.INSTANCE);
             }

@@ -3,17 +3,17 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Utils leaning](#utils-leaning)
-  - [excel](#excel)
-  - [http](#http)
-  - [json](#json)
-  - [protocol buffer](#protocol-buffer)
-  - [guava](#guava)
-  - [disruptor](#disruptor)
-  - [netty](#netty)
-  - [jsoup](#jsoup)
-  - [mapstruct](#mapstruct)
-  - [hutool](#hutool)
-  - [redission](#redission)
+    - [excel](#excel)
+    - [http](#http)
+    - [json](#json)
+    - [protocol buffer](#protocol-buffer)
+    - [guava](#guava)
+    - [disruptor](#disruptor)
+    - [netty](#netty)
+    - [jsoup](#jsoup)
+    - [mapstruct](#mapstruct)
+    - [hutool](#hutool)
+    - [redission](#redission)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -83,6 +83,30 @@
 > 高性能的网路框架，在NIO的基础上对其封装的,NIO是同步非阻塞，面向缓冲流的IO
 
 - [Netty测试案例](src/main/java/com/zwl/netty/NettyTest.java)
+
+### IM聊天室
+
+**完成功能**
+
+- 自定义协议
+- 自定义协议编解码
+- 根据协议使用拆包器
+- 拒绝非本协议连接
+- 心跳检测机制
+- 合并handler和并行handler
+- 登录退出
+- 单聊消息
+- 群聊消息
+- 创建群聊
+- 拉人群聊
+- 列出群聊
+- 退出群聊
+
+> 默认用户：账号密码相同:admin,root
+
+[IM聊天室服务端 Server启动类](src/main/java/com/zwl/netty/im/server/IMServer.java)
+
+[IM聊天室客户端 Client启动类](src/main/java/com/zwl/netty/im/client/IMClient.java)
 
 ## jsoup
 
