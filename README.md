@@ -144,3 +144,9 @@
 > redis分布式锁
 
 [redission测试](src/main/java/com/zwl/redis/RedissionTest.java)
+
+## retrofit
+
+> A type-safe HTTP client for Android and Java
+
+[retrofit测试](src/main/java/com/zwl/retrofit/RetroTest.java)
