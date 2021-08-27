@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package com.zwl.grpc;
+option java_package = 'com.zwl.grpc';
+option java_generate_equals_and_hash = true;
+option java_multiple_files = true;
+option java_string_check_utf8 = true;
+option java_generic_services = true;
+
+
+//定义rpc服务
+service Greeter{
+  //简单的一元rpc
+  rpc sayHello (HelloRequest) returns (HelloResponse) {}
+
+  //服务器流式rpc，客户端从返回的流中读取，直到没有消息
+  rpc listSayHello (HelloRequest) returns (stream HelloResponse) {}
+
+  //客户端流式rpc，客户端写入消息，等待服务端读取消息返回响应
+  rpc streamSayHello (stream HelloRequest) returns (HelloResponse) {}
+
+  //双向流式rpc
+  rpc sayHelloAll (stream HelloRequest) returns (stream HelloResponse) {}
+}
+
+message HelloRequest{
+  string name = 1;
+}
+
+message HelloResponse{
+  string message = 1;
+}

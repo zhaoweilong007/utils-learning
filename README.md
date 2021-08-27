@@ -147,6 +147,57 @@
 
 ## retrofit
 
-> A type-safe HTTP client for Android and Java
+> [retrofit](https://github.com/square/retrofit) A type-safe HTTP client for Android and Java
 
 [retrofit测试](src/main/java/com/zwl/retrofit/RetroTest.java)
+
+## grpc
+
+> [gRPC](https://grpc.io/) 是一个现代的高性能、开源远程过程调用 (RPC) 框架，可以在任何地方运行。它使客户端和服务器应用程序能够透明地通信，并使构建连接系统变得更加容易。
+> grpc使用protobuf序列化协议
+
+
+**主要使用场景**
+
+- 低延迟、高度可扩展的分布式系统。
+- 开发与云服务器通信的移动客户端。
+- 设计一个需要准确、高效且独立于语言的新协议。
+- 分层设计以启用扩展，例如。身份验证、负载平衡、日志记录和监控等
+
+### 使用
+
+建议查看官网教程<https://grpc.io/docs/languages/java/basics/>
+
+
+使用[grpc-java](https://github.com/grpc/grpc-java/blob/master/README.md) 类库在proto文件中定义rpc服务
+
+```protobuf
+
+//定义rpc服务
+service Greeter{
+  //简单的一元rpc
+  rpc sayHello (HelloRequest) returns (HelloResponse) {}
+
+  //服务器流式rpc，客户端从返回的流中读取，直到没有消息
+  rpc listSayHello (HelloRequest) returns (stream HelloResponse) {}
+
+  //客户端流式rpc，客户端写入消息，等待服务端读取消息返回响应
+  rpc streamSayHello (stream HelloRequest) returns (HelloResponse) {}
+
+  //双向流式rpc
+  rpc sayHelloAll (stream HelloRequest) returns (stream HelloResponse) {}
+}
+
+message HelloRequest{
+  string name = 1;
+}
+
+message HelloResponse{
+  string message = 1;
+}
+```
+
+使用maven插件生成客户端和服务端代码
+
+[GRPC测试案例](src/main/java/com/zwl/grpc/GRPCTest.java)
+
