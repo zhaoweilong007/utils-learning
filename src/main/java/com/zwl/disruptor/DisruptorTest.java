@@ -40,7 +40,7 @@ public class DisruptorTest {
     }
     disruptor.shutdown();
     executorService.shutdown();
-
+    stopwatch.stop();
     long elapsed = stopwatch.elapsed(TimeUnit.SECONDS);
     log.info("总耗时：{}s", elapsed);
   }

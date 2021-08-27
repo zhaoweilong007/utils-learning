@@ -3,17 +3,22 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Utils leaning](#utils-leaning)
-    - [excel](#excel)
-    - [http](#http)
-    - [json](#json)
-    - [protocol buffer](#protocol-buffer)
-    - [guava](#guava)
-    - [disruptor](#disruptor)
-    - [netty](#netty)
-    - [jsoup](#jsoup)
-    - [mapstruct](#mapstruct)
-    - [hutool](#hutool)
-    - [redission](#redission)
+  - [excel](#excel)
+  - [http](#http)
+  - [json](#json)
+  - [protocol buffer](#protocol-buffer)
+  - [guava](#guava)
+  - [disruptor](#disruptor)
+  - [netty](#netty)
+    - [IM聊天室](#im%E8%81%8A%E5%A4%A9%E5%AE%A4)
+  - [jsoup](#jsoup)
+    - [爬取知乎所有话题下高赞回答](#%E7%88%AC%E5%8F%96%E7%9F%A5%E4%B9%8E%E6%89%80%E6%9C%89%E8%AF%9D%E9%A2%98%E4%B8%8B%E9%AB%98%E8%B5%9E%E5%9B%9E%E7%AD%94)
+  - [mapstruct](#mapstruct)
+  - [hutool](#hutool)
+  - [redission](#redission)
+  - [retrofit](#retrofit)
+  - [grpc](#grpc)
+    - [基础使用](#%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -112,7 +117,7 @@
 
 > 爬取html解析dom，用于网络爬取
 
-- 爬取知乎所有话题下高赞回答
+### 爬取知乎所有话题下高赞回答
 
 - 运行方式
 
@@ -164,10 +169,9 @@
 - 设计一个需要准确、高效且独立于语言的新协议。
 - 分层设计以启用扩展，例如。身份验证、负载平衡、日志记录和监控等
 
-### 使用
+### 基础使用
 
 建议查看官网教程<https://grpc.io/docs/languages/java/basics/>
-
 
 使用[grpc-java](https://github.com/grpc/grpc-java/blob/master/README.md) 类库在proto文件中定义rpc服务
 
