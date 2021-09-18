@@ -4,7 +4,7 @@
 package com.zwl.protocolbuffer;
 
 public interface PersonOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:com.zwl.protocolbuffer.Person)
+    // @@protoc_insertion_point(interface_extends:Person)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -98,7 +98,7 @@ public interface PersonOrBuilder extends
    *手机
    * </pre>
    *
-   * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+   * <code>repeated .Person.PhoneNumber phones = 4;</code>
    */
   java.util.List<com.zwl.protocolbuffer.Person.PhoneNumber> 
       getPhonesList();
@@ -108,7 +108,7 @@ public interface PersonOrBuilder extends
    *手机
    * </pre>
    *
-   * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+   * <code>repeated .Person.PhoneNumber phones = 4;</code>
    */
   com.zwl.protocolbuffer.Person.PhoneNumber getPhones(int index);
   /**
@@ -117,7 +117,7 @@ public interface PersonOrBuilder extends
    *手机
    * </pre>
    *
-   * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+   * <code>repeated .Person.PhoneNumber phones = 4;</code>
    */
   int getPhonesCount();
   /**
@@ -126,7 +126,7 @@ public interface PersonOrBuilder extends
    *手机
    * </pre>
    *
-   * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+   * <code>repeated .Person.PhoneNumber phones = 4;</code>
    */
   java.util.List<? extends com.zwl.protocolbuffer.Person.PhoneNumberOrBuilder> 
       getPhonesOrBuilderList();
@@ -136,7 +136,7 @@ public interface PersonOrBuilder extends
    *手机
    * </pre>
    *
-   * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+   * <code>repeated .Person.PhoneNumber phones = 4;</code>
    */
   com.zwl.protocolbuffer.Person.PhoneNumberOrBuilder getPhonesOrBuilder(
       int index);

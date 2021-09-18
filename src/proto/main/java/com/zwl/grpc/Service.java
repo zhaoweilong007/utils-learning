@@ -15,15 +15,15 @@ public final class Service {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_zwl_grpc_HelloRequest_descriptor;
+    internal_static_HelloRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_zwl_grpc_HelloRequest_fieldAccessorTable;
+      internal_static_HelloRequest_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_zwl_grpc_HelloResponse_descriptor;
+    internal_static_HelloResponse_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_zwl_grpc_HelloResponse_fieldAccessorTable;
+      internal_static_HelloResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -33,34 +33,31 @@ public final class Service {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rService.proto\022\014com.zwl.grpc\"\034\n\014HelloRe" +
-      "quest\022\014\n\004name\030\001 \001(\t\" \n\rHelloResponse\022\017\n\007" +
-      "message\030\001 \001(\t2\272\002\n\007Greeter\022E\n\010sayHello\022\032." +
-      "com.zwl.grpc.HelloRequest\032\033.com.zwl.grpc" +
-      ".HelloResponse\"\000\022K\n\014listSayHello\022\032.com.z" +
-      "wl.grpc.HelloRequest\032\033.com.zwl.grpc.Hell" +
-      "oResponse\"\0000\001\022M\n\016streamSayHello\022\032.com.zw" +
-      "l.grpc.HelloRequest\032\033.com.zwl.grpc.Hello" +
-      "Response\"\000(\001\022L\n\013sayHelloAll\022\032.com.zwl.gr" +
-      "pc.HelloRequest\032\033.com.zwl.grpc.HelloResp" +
-      "onse\"\000(\0010\001B\031\n\014com.zwl.grpcP\001\210\001\001\240\001\001\330\001\001b\006p" +
-      "roto3"
+      "\n\rService.proto\"\034\n\014HelloRequest\022\014\n\004name\030" +
+      "\001 \001(\t\" \n\rHelloResponse\022\017\n\007message\030\001 \001(\t2" +
+      "\322\001\n\007Greeter\022+\n\010sayHello\022\r.HelloRequest\032\016" +
+      ".HelloResponse\"\000\0221\n\014listSayHello\022\r.Hello" +
+      "Request\032\016.HelloResponse\"\0000\001\0223\n\016streamSay" +
+      "Hello\022\r.HelloRequest\032\016.HelloResponse\"\000(\001" +
+      "\0222\n\013sayHelloAll\022\r.HelloRequest\032\016.HelloRe" +
+      "sponse\"\000(\0010\001B\031\n\014com.zwl.grpcP\001\210\001\001\240\001\001\330\001\001b" +
+      "\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         });
-    internal_static_com_zwl_grpc_HelloRequest_descriptor =
+    internal_static_HelloRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_com_zwl_grpc_HelloRequest_fieldAccessorTable = new
+    internal_static_HelloRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_zwl_grpc_HelloRequest_descriptor,
+        internal_static_HelloRequest_descriptor,
         new java.lang.String[] { "Name", });
-    internal_static_com_zwl_grpc_HelloResponse_descriptor =
+    internal_static_HelloResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_com_zwl_grpc_HelloResponse_fieldAccessorTable = new
+    internal_static_HelloResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_zwl_grpc_HelloResponse_descriptor,
+        internal_static_HelloResponse_descriptor,
         new java.lang.String[] { "Message", });
   }
 

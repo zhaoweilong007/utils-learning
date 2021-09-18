@@ -4,7 +4,7 @@
 package com.zwl.protocolbuffer;
 
 public interface ProtoDemoOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:com.zwl.protocolbuffer.ProtoDemo)
+    // @@protoc_insertion_point(interface_extends:ProtoDemo)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -170,25 +170,25 @@ public interface ProtoDemoOrBuilder extends
       java.lang.String key);
 
   /**
-   * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+   * <code>repeated .Result results = 19;</code>
    */
   java.util.List<com.zwl.protocolbuffer.Result> 
       getResultsList();
   /**
-   * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+   * <code>repeated .Result results = 19;</code>
    */
   com.zwl.protocolbuffer.Result getResults(int index);
   /**
-   * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+   * <code>repeated .Result results = 19;</code>
    */
   int getResultsCount();
   /**
-   * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+   * <code>repeated .Result results = 19;</code>
    */
   java.util.List<? extends com.zwl.protocolbuffer.ResultOrBuilder> 
       getResultsOrBuilderList();
   /**
-   * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+   * <code>repeated .Result results = 19;</code>
    */
   com.zwl.protocolbuffer.ResultOrBuilder getResultsOrBuilder(
       int index);

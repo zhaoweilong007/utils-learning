@@ -154,7 +154,7 @@ public class HutoolTest {
     for (Method method : methods) {
       String methodName = method.getName();
       if (methodName.startsWith("get") && method.getParameterCount() == 0) {
-        Object invoke = method.invoke(ReflectUtil.newInstance(RuntimeUtil.class), null);
+        Object invoke = method.invoke(ReflectUtil.newInstance(RuntimeUtil.class), (Object) null);
         log.info("方法{}：{}", methodName, invoke);
       }
     }

@@ -1,6 +1,7 @@
 package com.zwl;
 
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.lang.Console;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.zwl.jsoup.WebCrawler;
@@ -16,7 +17,6 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,6 @@ import org.springframework.test.context.junit4.SpringRunner;
  **/
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@Slf4j
 public class ApplicationTest {
 
   @Autowired
@@ -81,7 +80,7 @@ public class ApplicationTest {
 
     CustomDTO customDTO = customMapper.map(custom);
 
-    log.info("customDTO:{}", customDTO);
+    Console.log("customDTO:{}", customDTO);
   }
 
 }

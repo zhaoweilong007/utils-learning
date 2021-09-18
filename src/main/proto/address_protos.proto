@@ -1,7 +1,5 @@
 syntax = 'proto2';
 
-package com.zwl.protocolbuffer;
-
 option java_package = 'com.zwl.protocolbuffer';
 option java_generate_equals_and_hash = true;
 option java_multiple_files = true;

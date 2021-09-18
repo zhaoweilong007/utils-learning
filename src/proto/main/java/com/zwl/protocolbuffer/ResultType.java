@@ -4,7 +4,7 @@
 package com.zwl.protocolbuffer;
 
 /**
- * Protobuf enum {@code com.zwl.protocolbuffer.ResultType}
+ * Protobuf enum {@code ResultType}
  */
 public enum ResultType
     implements com.google.protobuf.ProtocolMessageEnum {
@@ -117,6 +117,6 @@ public enum ResultType
     this.value = value;
   }
 
-  // @@protoc_insertion_point(enum_scope:com.zwl.protocolbuffer.ResultType)
+  // @@protoc_insertion_point(enum_scope:ResultType)
 }
 

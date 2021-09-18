@@ -4,11 +4,11 @@
 package com.zwl.grpc;
 
 /**
- * Protobuf type {@code com.zwl.grpc.HelloResponse}
+ * Protobuf type {@code HelloResponse}
  */
 public final class HelloResponse extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:com.zwl.grpc.HelloResponse)
+    // @@protoc_insertion_point(message_implements:HelloResponse)
     HelloResponseOrBuilder {
 private static final long serialVersionUID = 0L;
   // Use HelloResponse.newBuilder() to construct.
@@ -76,13 +76,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.zwl.grpc.Service.internal_static_com_zwl_grpc_HelloResponse_descriptor;
+    return com.zwl.grpc.Service.internal_static_HelloResponse_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.zwl.grpc.Service.internal_static_com_zwl_grpc_HelloResponse_fieldAccessorTable
+    return com.zwl.grpc.Service.internal_static_HelloResponse_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.zwl.grpc.HelloResponse.class, com.zwl.grpc.HelloResponse.Builder.class);
   }
@@ -280,21 +280,21 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code com.zwl.grpc.HelloResponse}
+   * Protobuf type {@code HelloResponse}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:com.zwl.grpc.HelloResponse)
+      // @@protoc_insertion_point(builder_implements:HelloResponse)
       com.zwl.grpc.HelloResponseOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.zwl.grpc.Service.internal_static_com_zwl_grpc_HelloResponse_descriptor;
+      return com.zwl.grpc.Service.internal_static_HelloResponse_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.zwl.grpc.Service.internal_static_com_zwl_grpc_HelloResponse_fieldAccessorTable
+      return com.zwl.grpc.Service.internal_static_HelloResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.zwl.grpc.HelloResponse.class, com.zwl.grpc.HelloResponse.Builder.class);
     }
@@ -325,7 +325,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.zwl.grpc.Service.internal_static_com_zwl_grpc_HelloResponse_descriptor;
+      return com.zwl.grpc.Service.internal_static_HelloResponse_descriptor;
     }
 
     @java.lang.Override
@@ -515,10 +515,10 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:com.zwl.grpc.HelloResponse)
+    // @@protoc_insertion_point(builder_scope:HelloResponse)
   }
 
-  // @@protoc_insertion_point(class_scope:com.zwl.grpc.HelloResponse)
+  // @@protoc_insertion_point(class_scope:HelloResponse)
   private static final com.zwl.grpc.HelloResponse DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new com.zwl.grpc.HelloResponse();

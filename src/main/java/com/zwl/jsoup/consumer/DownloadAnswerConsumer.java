@@ -59,10 +59,10 @@ public class DownloadAnswerConsumer implements RocketMQListener<List<Answer>> {
   @Override
   public void onMessage(List<Answer> answerList) {
     log.info(">>>>>>>>>>>>>>>start:事件：下载高赞回答>>>>>>>>>>>>>>>>>");
-    boolean insertBatch = false;
+    boolean insertBatch;
     try {
       List<Answer> answers = answerList.stream().filter(answer -> {
-        Integer count = answerMapper
+        Long count = answerMapper
             .selectCount(
                 Wrappers.<Answer>lambdaQuery().eq(Answer::getAnswerId, answer.getAnswerId()));
         return count == 0;

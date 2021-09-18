@@ -1,9 +1,9 @@
 package com.zwl;
 
+import cn.hutool.core.lang.Console;
 import com.zwl.protocolbuffer.AddressBook;
 import java.net.URI;
 import java.net.URISyntaxException;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,6 @@ import org.springframework.web.client.RestTemplate;
  **/
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@Slf4j
 public class ProtobufTest {
 
   @Autowired
@@ -32,7 +31,7 @@ public class ProtobufTest {
 
     AddressBook addressBook = restTemplate
         .getForObject("http://localhost:8888/proto", AddressBook.class);
-    log.info("response :{}", addressBook);
+    Console.log("response :{}", addressBook);
 
     RequestEntity<AddressBook> httpEntity = new RequestEntity<AddressBook>(addressBook,
         new HttpHeaders() {{
@@ -44,7 +43,7 @@ public class ProtobufTest {
     HttpStatus statusCode = restTemplate
         .exchange("http://localhost:8888/receive", HttpMethod.POST, httpEntity, Void.class)
         .getStatusCode();
-    log.info("statusCode:{}", statusCode);
+    Console.log("statusCode:{}", statusCode);
   }
 
 }

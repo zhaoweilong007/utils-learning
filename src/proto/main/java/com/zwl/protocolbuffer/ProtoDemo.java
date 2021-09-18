@@ -4,11 +4,11 @@
 package com.zwl.protocolbuffer;
 
 /**
- * Protobuf type {@code com.zwl.protocolbuffer.ProtoDemo}
+ * Protobuf type {@code ProtoDemo}
  */
 public final class ProtoDemo extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:com.zwl.protocolbuffer.ProtoDemo)
+    // @@protoc_insertion_point(message_implements:ProtoDemo)
     ProtoDemoOrBuilder {
 private static final long serialVersionUID = 0L;
   // Use ProtoDemo.newBuilder() to construct.
@@ -224,7 +224,7 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.zwl.protocolbuffer.AllNormalTypes.internal_static_com_zwl_protocolbuffer_ProtoDemo_descriptor;
+    return com.zwl.protocolbuffer.AllNormalTypes.internal_static_ProtoDemo_descriptor;
   }
 
   @SuppressWarnings({"rawtypes"})
@@ -242,7 +242,7 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.zwl.protocolbuffer.AllNormalTypes.internal_static_com_zwl_protocolbuffer_ProtoDemo_fieldAccessorTable
+    return com.zwl.protocolbuffer.AllNormalTypes.internal_static_ProtoDemo_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.zwl.protocolbuffer.ProtoDemo.class, com.zwl.protocolbuffer.ProtoDemo.Builder.class);
   }
@@ -563,7 +563,7 @@ private static final long serialVersionUID = 0L;
         java.lang.String, java.lang.Long> defaultEntry =
             com.google.protobuf.MapEntry
             .<java.lang.String, java.lang.Long>newDefaultInstance(
-                com.zwl.protocolbuffer.AllNormalTypes.internal_static_com_zwl_protocolbuffer_ProtoDemo_MapEntry_descriptor, 
+                com.zwl.protocolbuffer.AllNormalTypes.internal_static_ProtoDemo_MapEntry_descriptor, 
                 com.google.protobuf.WireFormat.FieldType.STRING,
                 "",
                 com.google.protobuf.WireFormat.FieldType.INT64,
@@ -641,14 +641,14 @@ private static final long serialVersionUID = 0L;
   public static final int RESULTS_FIELD_NUMBER = 19;
   private java.util.List<com.zwl.protocolbuffer.Result> results_;
   /**
-   * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+   * <code>repeated .Result results = 19;</code>
    */
   @java.lang.Override
   public java.util.List<com.zwl.protocolbuffer.Result> getResultsList() {
     return results_;
   }
   /**
-   * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+   * <code>repeated .Result results = 19;</code>
    */
   @java.lang.Override
   public java.util.List<? extends com.zwl.protocolbuffer.ResultOrBuilder> 
@@ -656,21 +656,21 @@ private static final long serialVersionUID = 0L;
     return results_;
   }
   /**
-   * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+   * <code>repeated .Result results = 19;</code>
    */
   @java.lang.Override
   public int getResultsCount() {
     return results_.size();
   }
   /**
-   * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+   * <code>repeated .Result results = 19;</code>
    */
   @java.lang.Override
   public com.zwl.protocolbuffer.Result getResults(int index) {
     return results_.get(index);
   }
   /**
-   * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+   * <code>repeated .Result results = 19;</code>
    */
   @java.lang.Override
   public com.zwl.protocolbuffer.ResultOrBuilder getResultsOrBuilder(
@@ -1209,15 +1209,15 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code com.zwl.protocolbuffer.ProtoDemo}
+   * Protobuf type {@code ProtoDemo}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:com.zwl.protocolbuffer.ProtoDemo)
+      // @@protoc_insertion_point(builder_implements:ProtoDemo)
       com.zwl.protocolbuffer.ProtoDemoOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.zwl.protocolbuffer.AllNormalTypes.internal_static_com_zwl_protocolbuffer_ProtoDemo_descriptor;
+      return com.zwl.protocolbuffer.AllNormalTypes.internal_static_ProtoDemo_descriptor;
     }
 
     @SuppressWarnings({"rawtypes"})
@@ -1245,7 +1245,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.zwl.protocolbuffer.AllNormalTypes.internal_static_com_zwl_protocolbuffer_ProtoDemo_fieldAccessorTable
+      return com.zwl.protocolbuffer.AllNormalTypes.internal_static_ProtoDemo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.zwl.protocolbuffer.ProtoDemo.class, com.zwl.protocolbuffer.ProtoDemo.Builder.class);
     }
@@ -1333,7 +1333,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.zwl.protocolbuffer.AllNormalTypes.internal_static_com_zwl_protocolbuffer_ProtoDemo_descriptor;
+      return com.zwl.protocolbuffer.AllNormalTypes.internal_static_ProtoDemo_descriptor;
     }
 
     @java.lang.Override
@@ -2424,7 +2424,7 @@ private static final long serialVersionUID = 0L;
         com.zwl.protocolbuffer.Result, com.zwl.protocolbuffer.Result.Builder, com.zwl.protocolbuffer.ResultOrBuilder> resultsBuilder_;
 
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public java.util.List<com.zwl.protocolbuffer.Result> getResultsList() {
       if (resultsBuilder_ == null) {
@@ -2434,7 +2434,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public int getResultsCount() {
       if (resultsBuilder_ == null) {
@@ -2444,7 +2444,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public com.zwl.protocolbuffer.Result getResults(int index) {
       if (resultsBuilder_ == null) {
@@ -2454,7 +2454,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public Builder setResults(
         int index, com.zwl.protocolbuffer.Result value) {
@@ -2471,7 +2471,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public Builder setResults(
         int index, com.zwl.protocolbuffer.Result.Builder builderForValue) {
@@ -2485,7 +2485,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public Builder addResults(com.zwl.protocolbuffer.Result value) {
       if (resultsBuilder_ == null) {
@@ -2501,7 +2501,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public Builder addResults(
         int index, com.zwl.protocolbuffer.Result value) {
@@ -2518,7 +2518,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public Builder addResults(
         com.zwl.protocolbuffer.Result.Builder builderForValue) {
@@ -2532,7 +2532,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public Builder addResults(
         int index, com.zwl.protocolbuffer.Result.Builder builderForValue) {
@@ -2546,7 +2546,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public Builder addAllResults(
         java.lang.Iterable<? extends com.zwl.protocolbuffer.Result> values) {
@@ -2561,7 +2561,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public Builder clearResults() {
       if (resultsBuilder_ == null) {
@@ -2574,7 +2574,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public Builder removeResults(int index) {
       if (resultsBuilder_ == null) {
@@ -2587,14 +2587,14 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public com.zwl.protocolbuffer.Result.Builder getResultsBuilder(
         int index) {
       return getResultsFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public com.zwl.protocolbuffer.ResultOrBuilder getResultsOrBuilder(
         int index) {
@@ -2604,7 +2604,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public java.util.List<? extends com.zwl.protocolbuffer.ResultOrBuilder> 
          getResultsOrBuilderList() {
@@ -2615,14 +2615,14 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public com.zwl.protocolbuffer.Result.Builder addResultsBuilder() {
       return getResultsFieldBuilder().addBuilder(
           com.zwl.protocolbuffer.Result.getDefaultInstance());
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public com.zwl.protocolbuffer.Result.Builder addResultsBuilder(
         int index) {
@@ -2630,7 +2630,7 @@ private static final long serialVersionUID = 0L;
           index, com.zwl.protocolbuffer.Result.getDefaultInstance());
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Result results = 19;</code>
+     * <code>repeated .Result results = 19;</code>
      */
     public java.util.List<com.zwl.protocolbuffer.Result.Builder> 
          getResultsBuilderList() {
@@ -3141,10 +3141,10 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:com.zwl.protocolbuffer.ProtoDemo)
+    // @@protoc_insertion_point(builder_scope:ProtoDemo)
   }
 
-  // @@protoc_insertion_point(class_scope:com.zwl.protocolbuffer.ProtoDemo)
+  // @@protoc_insertion_point(class_scope:ProtoDemo)
   private static final com.zwl.protocolbuffer.ProtoDemo DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new com.zwl.protocolbuffer.ProtoDemo();

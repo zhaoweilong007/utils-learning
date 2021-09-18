@@ -140,7 +140,7 @@ public class WebCrawler implements CommandLineRunner {
     topics.forEach(topic -> {
           rocketMQTemplate.convertAndSend("queryAnswer", topic);
           listeningExecutorService.execute(() -> {
-            Integer count = topicMapper
+            long count = topicMapper
                 .selectCount(
                     Wrappers.<Topic>lambdaQuery().eq(Topic::getTopicId, topic.getTopicId()));
             if (count == 0) {
@@ -182,7 +182,7 @@ public class WebCrawler implements CommandLineRunner {
         .collect(Collectors.toCollection(ConcurrentLinkedQueue::new));
 
     List<Topic> topics = queue.parallelStream().filter(topic -> {
-      Integer one = topicMapper
+      long one = topicMapper
           .selectCount(Wrappers.<Topic>lambdaQuery().eq(Topic::getTopicId, topic.getTopicId()));
       return one == 0;
     }).collect(Collectors.toList());

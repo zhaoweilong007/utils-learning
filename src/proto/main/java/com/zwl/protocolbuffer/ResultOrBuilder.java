@@ -4,7 +4,7 @@
 package com.zwl.protocolbuffer;
 
 public interface ResultOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:com.zwl.protocolbuffer.Result)
+    // @@protoc_insertion_point(interface_extends:Result)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -26,12 +26,12 @@ public interface ResultOrBuilder extends
       getMsgBytes();
 
   /**
-   * <code>.com.zwl.protocolbuffer.ResultType type = 3;</code>
+   * <code>.ResultType type = 3;</code>
    * @return The enum numeric value on the wire for type.
    */
   int getTypeValue();
   /**
-   * <code>.com.zwl.protocolbuffer.ResultType type = 3;</code>
+   * <code>.ResultType type = 3;</code>
    * @return The type.
    */
   com.zwl.protocolbuffer.ResultType getType();

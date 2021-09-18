@@ -4,7 +4,7 @@
 package com.zwl.grpc;
 
 public interface HelloRequestOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:com.zwl.grpc.HelloRequest)
+    // @@protoc_insertion_point(interface_extends:HelloRequest)
     com.google.protobuf.MessageOrBuilder {
 
   /**

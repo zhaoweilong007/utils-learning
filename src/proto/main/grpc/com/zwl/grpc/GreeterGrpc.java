@@ -15,7 +15,7 @@ public final class GreeterGrpc {
 
   private GreeterGrpc() {}
 
-  public static final String SERVICE_NAME = "com.zwl.grpc.Greeter";
+  public static final String SERVICE_NAME = "Greeter";
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.zwl.grpc.HelloRequest,

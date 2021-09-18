@@ -4,11 +4,11 @@
 package com.zwl.protocolbuffer;
 
 /**
- * Protobuf type {@code com.zwl.protocolbuffer.Person}
+ * Protobuf type {@code Person}
  */
 public final class Person extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:com.zwl.protocolbuffer.Person)
+    // @@protoc_insertion_point(message_implements:Person)
     PersonOrBuilder {
 private static final long serialVersionUID = 0L;
   // Use Person.newBuilder() to construct.
@@ -102,13 +102,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.zwl.protocolbuffer.AddressBookProtos.internal_static_com_zwl_protocolbuffer_Person_descriptor;
+    return com.zwl.protocolbuffer.AddressBookProtos.internal_static_Person_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.zwl.protocolbuffer.AddressBookProtos.internal_static_com_zwl_protocolbuffer_Person_fieldAccessorTable
+    return com.zwl.protocolbuffer.AddressBookProtos.internal_static_Person_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.zwl.protocolbuffer.Person.class, com.zwl.protocolbuffer.Person.Builder.class);
   }
@@ -119,7 +119,7 @@ private static final long serialVersionUID = 0L;
    *手机类型
    * </pre>
    *
-   * Protobuf enum {@code com.zwl.protocolbuffer.Person.PhoneType}
+   * Protobuf enum {@code Person.PhoneType}
    */
   public enum PhoneType
       implements com.google.protobuf.ProtocolMessageEnum {
@@ -220,11 +220,11 @@ private static final long serialVersionUID = 0L;
       this.value = value;
     }
 
-    // @@protoc_insertion_point(enum_scope:com.zwl.protocolbuffer.Person.PhoneType)
+    // @@protoc_insertion_point(enum_scope:Person.PhoneType)
   }
 
   public interface PhoneNumberOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.zwl.protocolbuffer.Person.PhoneNumber)
+      // @@protoc_insertion_point(interface_extends:Person.PhoneNumber)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -265,7 +265,7 @@ private static final long serialVersionUID = 0L;
      *手机类型
      * </pre>
      *
-     * <code>optional .com.zwl.protocolbuffer.Person.PhoneType type = 2 [default = home];</code>
+     * <code>optional .Person.PhoneType type = 2 [default = home];</code>
      * @return Whether the type field is set.
      */
     boolean hasType();
@@ -275,7 +275,7 @@ private static final long serialVersionUID = 0L;
      *手机类型
      * </pre>
      *
-     * <code>optional .com.zwl.protocolbuffer.Person.PhoneType type = 2 [default = home];</code>
+     * <code>optional .Person.PhoneType type = 2 [default = home];</code>
      * @return The type.
      */
     com.zwl.protocolbuffer.Person.PhoneType getType();
@@ -286,11 +286,11 @@ private static final long serialVersionUID = 0L;
    *手机号码类
    * </pre>
    *
-   * Protobuf type {@code com.zwl.protocolbuffer.Person.PhoneNumber}
+   * Protobuf type {@code Person.PhoneNumber}
    */
   public static final class PhoneNumber extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:com.zwl.protocolbuffer.Person.PhoneNumber)
+      // @@protoc_insertion_point(message_implements:Person.PhoneNumber)
       PhoneNumberOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use PhoneNumber.newBuilder() to construct.
@@ -372,13 +372,13 @@ private static final long serialVersionUID = 0L;
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.zwl.protocolbuffer.AddressBookProtos.internal_static_com_zwl_protocolbuffer_Person_PhoneNumber_descriptor;
+      return com.zwl.protocolbuffer.AddressBookProtos.internal_static_Person_PhoneNumber_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.zwl.protocolbuffer.AddressBookProtos.internal_static_com_zwl_protocolbuffer_Person_PhoneNumber_fieldAccessorTable
+      return com.zwl.protocolbuffer.AddressBookProtos.internal_static_Person_PhoneNumber_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.zwl.protocolbuffer.Person.PhoneNumber.class, com.zwl.protocolbuffer.Person.PhoneNumber.Builder.class);
     }
@@ -453,7 +453,7 @@ private static final long serialVersionUID = 0L;
      *手机类型
      * </pre>
      *
-     * <code>optional .com.zwl.protocolbuffer.Person.PhoneType type = 2 [default = home];</code>
+     * <code>optional .Person.PhoneType type = 2 [default = home];</code>
      * @return Whether the type field is set.
      */
     @java.lang.Override public boolean hasType() {
@@ -465,7 +465,7 @@ private static final long serialVersionUID = 0L;
      *手机类型
      * </pre>
      *
-     * <code>optional .com.zwl.protocolbuffer.Person.PhoneType type = 2 [default = home];</code>
+     * <code>optional .Person.PhoneType type = 2 [default = home];</code>
      * @return The type.
      */
     @java.lang.Override public com.zwl.protocolbuffer.Person.PhoneType getType() {
@@ -654,21 +654,21 @@ private static final long serialVersionUID = 0L;
      *手机号码类
      * </pre>
      *
-     * Protobuf type {@code com.zwl.protocolbuffer.Person.PhoneNumber}
+     * Protobuf type {@code Person.PhoneNumber}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.zwl.protocolbuffer.Person.PhoneNumber)
+        // @@protoc_insertion_point(builder_implements:Person.PhoneNumber)
         com.zwl.protocolbuffer.Person.PhoneNumberOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.zwl.protocolbuffer.AddressBookProtos.internal_static_com_zwl_protocolbuffer_Person_PhoneNumber_descriptor;
+        return com.zwl.protocolbuffer.AddressBookProtos.internal_static_Person_PhoneNumber_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.zwl.protocolbuffer.AddressBookProtos.internal_static_com_zwl_protocolbuffer_Person_PhoneNumber_fieldAccessorTable
+        return com.zwl.protocolbuffer.AddressBookProtos.internal_static_Person_PhoneNumber_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 com.zwl.protocolbuffer.Person.PhoneNumber.class, com.zwl.protocolbuffer.Person.PhoneNumber.Builder.class);
       }
@@ -701,7 +701,7 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.zwl.protocolbuffer.AddressBookProtos.internal_static_com_zwl_protocolbuffer_Person_PhoneNumber_descriptor;
+        return com.zwl.protocolbuffer.AddressBookProtos.internal_static_Person_PhoneNumber_descriptor;
       }
 
       @java.lang.Override
@@ -938,7 +938,7 @@ private static final long serialVersionUID = 0L;
        *手机类型
        * </pre>
        *
-       * <code>optional .com.zwl.protocolbuffer.Person.PhoneType type = 2 [default = home];</code>
+       * <code>optional .Person.PhoneType type = 2 [default = home];</code>
        * @return Whether the type field is set.
        */
       @java.lang.Override public boolean hasType() {
@@ -950,7 +950,7 @@ private static final long serialVersionUID = 0L;
        *手机类型
        * </pre>
        *
-       * <code>optional .com.zwl.protocolbuffer.Person.PhoneType type = 2 [default = home];</code>
+       * <code>optional .Person.PhoneType type = 2 [default = home];</code>
        * @return The type.
        */
       @java.lang.Override
@@ -965,7 +965,7 @@ private static final long serialVersionUID = 0L;
        *手机类型
        * </pre>
        *
-       * <code>optional .com.zwl.protocolbuffer.Person.PhoneType type = 2 [default = home];</code>
+       * <code>optional .Person.PhoneType type = 2 [default = home];</code>
        * @param value The type to set.
        * @return This builder for chaining.
        */
@@ -984,7 +984,7 @@ private static final long serialVersionUID = 0L;
        *手机类型
        * </pre>
        *
-       * <code>optional .com.zwl.protocolbuffer.Person.PhoneType type = 2 [default = home];</code>
+       * <code>optional .Person.PhoneType type = 2 [default = home];</code>
        * @return This builder for chaining.
        */
       public Builder clearType() {
@@ -1006,10 +1006,10 @@ private static final long serialVersionUID = 0L;
       }
 
 
-      // @@protoc_insertion_point(builder_scope:com.zwl.protocolbuffer.Person.PhoneNumber)
+      // @@protoc_insertion_point(builder_scope:Person.PhoneNumber)
     }
 
-    // @@protoc_insertion_point(class_scope:com.zwl.protocolbuffer.Person.PhoneNumber)
+    // @@protoc_insertion_point(class_scope:Person.PhoneNumber)
     private static final com.zwl.protocolbuffer.Person.PhoneNumber DEFAULT_INSTANCE;
     static {
       DEFAULT_INSTANCE = new com.zwl.protocolbuffer.Person.PhoneNumber();
@@ -1206,7 +1206,7 @@ private static final long serialVersionUID = 0L;
    *手机
    * </pre>
    *
-   * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+   * <code>repeated .Person.PhoneNumber phones = 4;</code>
    */
   @java.lang.Override
   public java.util.List<com.zwl.protocolbuffer.Person.PhoneNumber> getPhonesList() {
@@ -1218,7 +1218,7 @@ private static final long serialVersionUID = 0L;
    *手机
    * </pre>
    *
-   * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+   * <code>repeated .Person.PhoneNumber phones = 4;</code>
    */
   @java.lang.Override
   public java.util.List<? extends com.zwl.protocolbuffer.Person.PhoneNumberOrBuilder> 
@@ -1231,7 +1231,7 @@ private static final long serialVersionUID = 0L;
    *手机
    * </pre>
    *
-   * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+   * <code>repeated .Person.PhoneNumber phones = 4;</code>
    */
   @java.lang.Override
   public int getPhonesCount() {
@@ -1243,7 +1243,7 @@ private static final long serialVersionUID = 0L;
    *手机
    * </pre>
    *
-   * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+   * <code>repeated .Person.PhoneNumber phones = 4;</code>
    */
   @java.lang.Override
   public com.zwl.protocolbuffer.Person.PhoneNumber getPhones(int index) {
@@ -1255,7 +1255,7 @@ private static final long serialVersionUID = 0L;
    *手机
    * </pre>
    *
-   * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+   * <code>repeated .Person.PhoneNumber phones = 4;</code>
    */
   @java.lang.Override
   public com.zwl.protocolbuffer.Person.PhoneNumberOrBuilder getPhonesOrBuilder(
@@ -1467,21 +1467,21 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code com.zwl.protocolbuffer.Person}
+   * Protobuf type {@code Person}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:com.zwl.protocolbuffer.Person)
+      // @@protoc_insertion_point(builder_implements:Person)
       com.zwl.protocolbuffer.PersonOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.zwl.protocolbuffer.AddressBookProtos.internal_static_com_zwl_protocolbuffer_Person_descriptor;
+      return com.zwl.protocolbuffer.AddressBookProtos.internal_static_Person_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.zwl.protocolbuffer.AddressBookProtos.internal_static_com_zwl_protocolbuffer_Person_fieldAccessorTable
+      return com.zwl.protocolbuffer.AddressBookProtos.internal_static_Person_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.zwl.protocolbuffer.Person.class, com.zwl.protocolbuffer.Person.Builder.class);
     }
@@ -1523,7 +1523,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.zwl.protocolbuffer.AddressBookProtos.internal_static_com_zwl_protocolbuffer_Person_descriptor;
+      return com.zwl.protocolbuffer.AddressBookProtos.internal_static_Person_descriptor;
     }
 
     @java.lang.Override
@@ -1987,7 +1987,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public java.util.List<com.zwl.protocolbuffer.Person.PhoneNumber> getPhonesList() {
       if (phonesBuilder_ == null) {
@@ -2002,7 +2002,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public int getPhonesCount() {
       if (phonesBuilder_ == null) {
@@ -2017,7 +2017,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public com.zwl.protocolbuffer.Person.PhoneNumber getPhones(int index) {
       if (phonesBuilder_ == null) {
@@ -2032,7 +2032,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public Builder setPhones(
         int index, com.zwl.protocolbuffer.Person.PhoneNumber value) {
@@ -2054,7 +2054,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public Builder setPhones(
         int index, com.zwl.protocolbuffer.Person.PhoneNumber.Builder builderForValue) {
@@ -2073,7 +2073,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public Builder addPhones(com.zwl.protocolbuffer.Person.PhoneNumber value) {
       if (phonesBuilder_ == null) {
@@ -2094,7 +2094,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public Builder addPhones(
         int index, com.zwl.protocolbuffer.Person.PhoneNumber value) {
@@ -2116,7 +2116,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public Builder addPhones(
         com.zwl.protocolbuffer.Person.PhoneNumber.Builder builderForValue) {
@@ -2135,7 +2135,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public Builder addPhones(
         int index, com.zwl.protocolbuffer.Person.PhoneNumber.Builder builderForValue) {
@@ -2154,7 +2154,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public Builder addAllPhones(
         java.lang.Iterable<? extends com.zwl.protocolbuffer.Person.PhoneNumber> values) {
@@ -2174,7 +2174,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public Builder clearPhones() {
       if (phonesBuilder_ == null) {
@@ -2192,7 +2192,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public Builder removePhones(int index) {
       if (phonesBuilder_ == null) {
@@ -2210,7 +2210,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public com.zwl.protocolbuffer.Person.PhoneNumber.Builder getPhonesBuilder(
         int index) {
@@ -2222,7 +2222,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public com.zwl.protocolbuffer.Person.PhoneNumberOrBuilder getPhonesOrBuilder(
         int index) {
@@ -2237,7 +2237,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public java.util.List<? extends com.zwl.protocolbuffer.Person.PhoneNumberOrBuilder> 
          getPhonesOrBuilderList() {
@@ -2253,7 +2253,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public com.zwl.protocolbuffer.Person.PhoneNumber.Builder addPhonesBuilder() {
       return getPhonesFieldBuilder().addBuilder(
@@ -2265,7 +2265,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public com.zwl.protocolbuffer.Person.PhoneNumber.Builder addPhonesBuilder(
         int index) {
@@ -2278,7 +2278,7 @@ private static final long serialVersionUID = 0L;
      *手机
      * </pre>
      *
-     * <code>repeated .com.zwl.protocolbuffer.Person.PhoneNumber phones = 4;</code>
+     * <code>repeated .Person.PhoneNumber phones = 4;</code>
      */
     public java.util.List<com.zwl.protocolbuffer.Person.PhoneNumber.Builder> 
          getPhonesBuilderList() {
@@ -2311,10 +2311,10 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:com.zwl.protocolbuffer.Person)
+    // @@protoc_insertion_point(builder_scope:Person)
   }
 
-  // @@protoc_insertion_point(class_scope:com.zwl.protocolbuffer.Person)
+  // @@protoc_insertion_point(class_scope:Person)
   private static final com.zwl.protocolbuffer.Person DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new com.zwl.protocolbuffer.Person();

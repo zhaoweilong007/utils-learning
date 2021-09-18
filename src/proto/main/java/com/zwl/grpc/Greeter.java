@@ -8,7 +8,7 @@ package com.zwl.grpc;
  *定义rpc服务
  * </pre>
  *
- * Protobuf service {@code com.zwl.grpc.Greeter}
+ * Protobuf service {@code Greeter}
  */
 public  abstract class Greeter
     implements com.google.protobuf.Service {
@@ -20,7 +20,7 @@ public  abstract class Greeter
      *简单的一元rpc
      * </pre>
      *
-     * <code>rpc sayHello(.com.zwl.grpc.HelloRequest) returns (.com.zwl.grpc.HelloResponse);</code>
+     * <code>rpc sayHello(.HelloRequest) returns (.HelloResponse);</code>
      */
     public abstract void sayHello(
         com.google.protobuf.RpcController controller,
@@ -32,7 +32,7 @@ public  abstract class Greeter
      *服务器流式rpc，客户端从返回的流中读取，直到没有消息
      * </pre>
      *
-     * <code>rpc listSayHello(.com.zwl.grpc.HelloRequest) returns (stream .com.zwl.grpc.HelloResponse);</code>
+     * <code>rpc listSayHello(.HelloRequest) returns (stream .HelloResponse);</code>
      */
     public abstract void listSayHello(
         com.google.protobuf.RpcController controller,
@@ -44,7 +44,7 @@ public  abstract class Greeter
      *客户端流式rpc，客户端写入消息，等待服务端读取消息返回响应
      * </pre>
      *
-     * <code>rpc streamSayHello(stream .com.zwl.grpc.HelloRequest) returns (.com.zwl.grpc.HelloResponse);</code>
+     * <code>rpc streamSayHello(stream .HelloRequest) returns (.HelloResponse);</code>
      */
     public abstract void streamSayHello(
         com.google.protobuf.RpcController controller,
@@ -56,7 +56,7 @@ public  abstract class Greeter
      *双向流式rpc
      * </pre>
      *
-     * <code>rpc sayHelloAll(stream .com.zwl.grpc.HelloRequest) returns (stream .com.zwl.grpc.HelloResponse);</code>
+     * <code>rpc sayHelloAll(stream .HelloRequest) returns (stream .HelloResponse);</code>
      */
     public abstract void sayHelloAll(
         com.google.protobuf.RpcController controller,
@@ -187,7 +187,7 @@ public  abstract class Greeter
    *简单的一元rpc
    * </pre>
    *
-   * <code>rpc sayHello(.com.zwl.grpc.HelloRequest) returns (.com.zwl.grpc.HelloResponse);</code>
+   * <code>rpc sayHello(.HelloRequest) returns (.HelloResponse);</code>
    */
   public abstract void sayHello(
       com.google.protobuf.RpcController controller,
@@ -199,7 +199,7 @@ public  abstract class Greeter
    *服务器流式rpc，客户端从返回的流中读取，直到没有消息
    * </pre>
    *
-   * <code>rpc listSayHello(.com.zwl.grpc.HelloRequest) returns (stream .com.zwl.grpc.HelloResponse);</code>
+   * <code>rpc listSayHello(.HelloRequest) returns (stream .HelloResponse);</code>
    */
   public abstract void listSayHello(
       com.google.protobuf.RpcController controller,
@@ -211,7 +211,7 @@ public  abstract class Greeter
    *客户端流式rpc，客户端写入消息，等待服务端读取消息返回响应
    * </pre>
    *
-   * <code>rpc streamSayHello(stream .com.zwl.grpc.HelloRequest) returns (.com.zwl.grpc.HelloResponse);</code>
+   * <code>rpc streamSayHello(stream .HelloRequest) returns (.HelloResponse);</code>
    */
   public abstract void streamSayHello(
       com.google.protobuf.RpcController controller,
@@ -223,7 +223,7 @@ public  abstract class Greeter
    *双向流式rpc
    * </pre>
    *
-   * <code>rpc sayHelloAll(stream .com.zwl.grpc.HelloRequest) returns (stream .com.zwl.grpc.HelloResponse);</code>
+   * <code>rpc sayHelloAll(stream .HelloRequest) returns (stream .HelloResponse);</code>
    */
   public abstract void sayHelloAll(
       com.google.protobuf.RpcController controller,
@@ -481,6 +481,6 @@ public  abstract class Greeter
 
   }
 
-  // @@protoc_insertion_point(class_scope:com.zwl.grpc.Greeter)
+  // @@protoc_insertion_point(class_scope:Greeter)
 }
 

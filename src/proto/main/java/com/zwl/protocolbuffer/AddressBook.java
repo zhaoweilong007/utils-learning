@@ -4,11 +4,11 @@
 package com.zwl.protocolbuffer;
 
 /**
- * Protobuf type {@code com.zwl.protocolbuffer.AddressBook}
+ * Protobuf type {@code AddressBook}
  */
 public final class AddressBook extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:com.zwl.protocolbuffer.AddressBook)
+    // @@protoc_insertion_point(message_implements:AddressBook)
     AddressBookOrBuilder {
 private static final long serialVersionUID = 0L;
   // Use AddressBook.newBuilder() to construct.
@@ -83,13 +83,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.zwl.protocolbuffer.AddressBookProtos.internal_static_com_zwl_protocolbuffer_AddressBook_descriptor;
+    return com.zwl.protocolbuffer.AddressBookProtos.internal_static_AddressBook_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.zwl.protocolbuffer.AddressBookProtos.internal_static_com_zwl_protocolbuffer_AddressBook_fieldAccessorTable
+    return com.zwl.protocolbuffer.AddressBookProtos.internal_static_AddressBook_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.zwl.protocolbuffer.AddressBook.class, com.zwl.protocolbuffer.AddressBook.Builder.class);
   }
@@ -97,14 +97,14 @@ private static final long serialVersionUID = 0L;
   public static final int PERSON_FIELD_NUMBER = 1;
   private java.util.List<com.zwl.protocolbuffer.Person> person_;
   /**
-   * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+   * <code>repeated .Person person = 1;</code>
    */
   @java.lang.Override
   public java.util.List<com.zwl.protocolbuffer.Person> getPersonList() {
     return person_;
   }
   /**
-   * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+   * <code>repeated .Person person = 1;</code>
    */
   @java.lang.Override
   public java.util.List<? extends com.zwl.protocolbuffer.PersonOrBuilder> 
@@ -112,21 +112,21 @@ private static final long serialVersionUID = 0L;
     return person_;
   }
   /**
-   * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+   * <code>repeated .Person person = 1;</code>
    */
   @java.lang.Override
   public int getPersonCount() {
     return person_.size();
   }
   /**
-   * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+   * <code>repeated .Person person = 1;</code>
    */
   @java.lang.Override
   public com.zwl.protocolbuffer.Person getPerson(int index) {
     return person_.get(index);
   }
   /**
-   * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+   * <code>repeated .Person person = 1;</code>
    */
   @java.lang.Override
   public com.zwl.protocolbuffer.PersonOrBuilder getPersonOrBuilder(
@@ -292,21 +292,21 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code com.zwl.protocolbuffer.AddressBook}
+   * Protobuf type {@code AddressBook}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:com.zwl.protocolbuffer.AddressBook)
+      // @@protoc_insertion_point(builder_implements:AddressBook)
       com.zwl.protocolbuffer.AddressBookOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.zwl.protocolbuffer.AddressBookProtos.internal_static_com_zwl_protocolbuffer_AddressBook_descriptor;
+      return com.zwl.protocolbuffer.AddressBookProtos.internal_static_AddressBook_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.zwl.protocolbuffer.AddressBookProtos.internal_static_com_zwl_protocolbuffer_AddressBook_fieldAccessorTable
+      return com.zwl.protocolbuffer.AddressBookProtos.internal_static_AddressBook_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.zwl.protocolbuffer.AddressBook.class, com.zwl.protocolbuffer.AddressBook.Builder.class);
     }
@@ -342,7 +342,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.zwl.protocolbuffer.AddressBookProtos.internal_static_com_zwl_protocolbuffer_AddressBook_descriptor;
+      return com.zwl.protocolbuffer.AddressBookProtos.internal_static_AddressBook_descriptor;
     }
 
     @java.lang.Override
@@ -489,7 +489,7 @@ private static final long serialVersionUID = 0L;
         com.zwl.protocolbuffer.Person, com.zwl.protocolbuffer.Person.Builder, com.zwl.protocolbuffer.PersonOrBuilder> personBuilder_;
 
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public java.util.List<com.zwl.protocolbuffer.Person> getPersonList() {
       if (personBuilder_ == null) {
@@ -499,7 +499,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public int getPersonCount() {
       if (personBuilder_ == null) {
@@ -509,7 +509,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public com.zwl.protocolbuffer.Person getPerson(int index) {
       if (personBuilder_ == null) {
@@ -519,7 +519,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public Builder setPerson(
         int index, com.zwl.protocolbuffer.Person value) {
@@ -536,7 +536,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public Builder setPerson(
         int index, com.zwl.protocolbuffer.Person.Builder builderForValue) {
@@ -550,7 +550,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public Builder addPerson(com.zwl.protocolbuffer.Person value) {
       if (personBuilder_ == null) {
@@ -566,7 +566,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public Builder addPerson(
         int index, com.zwl.protocolbuffer.Person value) {
@@ -583,7 +583,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public Builder addPerson(
         com.zwl.protocolbuffer.Person.Builder builderForValue) {
@@ -597,7 +597,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public Builder addPerson(
         int index, com.zwl.protocolbuffer.Person.Builder builderForValue) {
@@ -611,7 +611,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public Builder addAllPerson(
         java.lang.Iterable<? extends com.zwl.protocolbuffer.Person> values) {
@@ -626,7 +626,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public Builder clearPerson() {
       if (personBuilder_ == null) {
@@ -639,7 +639,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public Builder removePerson(int index) {
       if (personBuilder_ == null) {
@@ -652,14 +652,14 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public com.zwl.protocolbuffer.Person.Builder getPersonBuilder(
         int index) {
       return getPersonFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public com.zwl.protocolbuffer.PersonOrBuilder getPersonOrBuilder(
         int index) {
@@ -669,7 +669,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public java.util.List<? extends com.zwl.protocolbuffer.PersonOrBuilder> 
          getPersonOrBuilderList() {
@@ -680,14 +680,14 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public com.zwl.protocolbuffer.Person.Builder addPersonBuilder() {
       return getPersonFieldBuilder().addBuilder(
           com.zwl.protocolbuffer.Person.getDefaultInstance());
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public com.zwl.protocolbuffer.Person.Builder addPersonBuilder(
         int index) {
@@ -695,7 +695,7 @@ private static final long serialVersionUID = 0L;
           index, com.zwl.protocolbuffer.Person.getDefaultInstance());
     }
     /**
-     * <code>repeated .com.zwl.protocolbuffer.Person person = 1;</code>
+     * <code>repeated .Person person = 1;</code>
      */
     public java.util.List<com.zwl.protocolbuffer.Person.Builder> 
          getPersonBuilderList() {
@@ -728,10 +728,10 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:com.zwl.protocolbuffer.AddressBook)
+    // @@protoc_insertion_point(builder_scope:AddressBook)
   }
 
-  // @@protoc_insertion_point(class_scope:com.zwl.protocolbuffer.AddressBook)
+  // @@protoc_insertion_point(class_scope:AddressBook)
   private static final com.zwl.protocolbuffer.AddressBook DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new com.zwl.protocolbuffer.AddressBook();
