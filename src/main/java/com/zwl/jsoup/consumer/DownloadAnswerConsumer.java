@@ -62,7 +62,7 @@ public class DownloadAnswerConsumer implements RocketMQListener<List<Answer>> {
     boolean insertBatch;
     try {
       List<Answer> answers = answerList.stream().filter(answer -> {
-        Integer count = answerMapper
+        Long count = answerMapper
             .selectCount(
                 Wrappers.<Answer>lambdaQuery().eq(Answer::getAnswerId, answer.getAnswerId()));
         return count == 0;

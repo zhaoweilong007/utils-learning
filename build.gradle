@@ -2,20 +2,6 @@ buildscript {
     ext {
         springBootVersion = '2.5.4'
     }
-    repositories {
-        //本地仓库
-        mavenLocal()
-        //阿里云
-        maven {
-            url 'https://maven.aliyun.com/nexus/content/groups/public/'
-        }
-        //中央仓库
-        mavenCentral()
-        //gradle插件
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
@@ -26,6 +12,20 @@ plugins {
     id 'idea'
     id 'org.springframework.boot' version '2.5.4'
     id 'com.google.protobuf' version '0.8.17'
+}
+
+allprojects {
+    repositories {
+        mavenLocal()
+        maven {
+            url 'https://maven.aliyun.com/nexus/content/groups/public/'
+        }
+        mavenCentral()
+        google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
 }
 
 dependencies {
