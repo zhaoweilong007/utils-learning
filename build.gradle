@@ -61,7 +61,9 @@ dependencies {
     implementation 'io.grpc:grpc-netty-shaded:1.40.1'
     implementation "io.grpc:grpc-protobuf:1.40.1"
     implementation "io.grpc:grpc-stub:1.40.1"
-    testImplementation('org.springframework.boot:spring-boot-starter-test:2.5.4')
+    implementation 'org.openjdk.jmh:jmh-core:1.35'
+    annotationProcessor 'org.openjdk.jmh:jmh-generator-annprocess:1.35'
+    implementation('org.springframework.boot:spring-boot-starter-test:2.5.4')
 }
 
 group = 'com.zwl'
