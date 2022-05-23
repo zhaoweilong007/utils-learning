@@ -29,6 +29,7 @@ allprojects {
 }
 
 dependencies {
+    implementation 'one.util:streamex:0.8.1'
     implementation 'us.codecraft:webmagic-core:0.7.5'
     implementation 'us.codecraft:webmagic-extension:0.7.5'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.5.4'
@@ -83,10 +84,10 @@ protobuf {
     protoc {
         artifact = "com.google.protobuf:protoc:3.17.3"
     }
-    generatedFilesBaseDir = "$projectDir/src/proto"
-    clean {
-        delete generatedFilesBaseDir
-    }
+    generatedFilesBaseDir = "$projectDir/src"
+//    clean {
+//        delete generatedFilesBaseDir
+//    }
     plugins {
         grpc {
             artifact = 'io.grpc:protoc-gen-grpc-java:1.40.1'
